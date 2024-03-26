@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { useSession, useSupabaseClient, useSessionContext } from "@supabase/auth-helpers-react";
 import { View, Text, Button, StyleSheet, TextInput } from "react-native";
 import DateTimePicker from "react-datetime-picker";
+import { SafeAreaView } from "react-native-web";
 
 export default function CreateCalendarEvent() {
-    const [ start, setStart ] = useState(new Date());
-    const [ end, setEnd ] = useState(new Date());
-    const [ eventName, setEventName ] = useState("");
-    const [ eventDescription, setEventDescription ] = useState("");
+    const [start, setStart] = useState(new Date());
+    const [end, setEnd] = useState(new Date());
+    const [eventName, setEventName] = useState("");
+    const [eventDescription, setEventDescription] = useState("");
 
 
     const session = useSession(); //token, when session exists we have a user
@@ -25,7 +26,7 @@ export default function CreateCalendarEvent() {
                 scopes: 'https://www.googleapis.com/auth/calendar'
             }
         })
-        if(error) {
+        if (error) {
             alert("Error logging in to google provider with Supabase")
             console.log(error);
         }
@@ -68,39 +69,64 @@ export default function CreateCalendarEvent() {
     // console.log(eventName)
     // console.log(eventDescription)
     return (
-        <View style={styles.formContainer}>
-            {session ? (
-                <>
-                    <Text>Hey there {session.user.email}</Text>
-                    <Text>Start of your event</Text>
-                    <DateTimePicker onChange={setStart} value={start} />
-                    <Text>End of your event</Text>
-                    <DateTimePicker onChange={setEnd} value={end} />
-                    <Text>Event Name</Text>
-                    <TextInput 
-                    onChangeText={(e) => setEventName(e)}
-                    />
-                    <Text>Event description</Text>
-                    <TextInput 
-                    onChangeText={(e) => setEventDescription(e)}
-                    />
-                    <hr/>
-                    <View>
-                    <Button title={"Create Calendar Event"} onPress={CreateCalendarEvent} />
-                    <hr/>
-                    <Button title={"Sign Out"} onPress={signOut} />
-                    </View>
-                </>
-            ) : (
-                <Button title={"Sign In With Google"} onPress={googleSignIn} />
-            )}
-        </View>
+        <SafeAreaView style={styles.createEventContainer}>
+            <View style={styles.createEventinnerContainer}>
+                {session ? (
+                    <>
+                        <Text>Hey{session.user.email}</Text>
+                        <Text>Start of your event</Text>
+                        <DateTimePicker style={styles.dateTimeStart} onChange={setStart} value={start} />
+                        <Text>End of your event</Text>
+                        <DateTimePicker style={styles.dateTimeEnd} onChange={setEnd} value={end} />
+                        <Text>Event Name</Text>
+                        <TextInput
+                        style={styles.textInputName}
+                        onChangeText={(e) => setEventName(e)}
+                        />
+                        <Text>Event description</Text>
+                        <TextInput
+                        style={styles.textInputDescription}
+                        onChangeText={(e) => setEventDescription(e)}
+                        />
+                        <hr />
+                        <View style={styles.buttonContainer}>
+                            <Button title={"Create Event"} onPress={CreateCalendarEvent} />
+                            <Button title={"Sign Out"} onPress={signOut} />
+                        </View>
+                    </>
+                ) : (
+                    <Button title={"Sign In With Google"} onPress={googleSignIn} />
+                )}
+            </View>
+        </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
-    formContainer: {
-        width: 400,
-        margin: 30,
-    }
-})
+    createEventContainer: {
+        borderColor: "red",
+        borderWidth: 2,
+        flex: 1,
+        },
+    createEventinnerContainer: {
+        borderColor: "blue",
+        borderWidth: 2,
+        width: "100%",
+    },
+    textInputName: {
+        borderColor: "gray",
+        borderWidth: 3
+    },
+    textInputDescription: {
+        borderColor: "gray",
+        borderWidth: 3
+    },
+    buttonContainer: {
+        borderColor: "hot read",
+        borderWidth: 5,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginTop: 20,
+        width: "100%",
+    },
+});
