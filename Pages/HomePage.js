@@ -1,6 +1,7 @@
 import React from "react"
 import { View, Text, Button } from "react-native"
 import CreateCalendarEvent from "./CreateCalendarEvent"
+import Api from "../components/API"
 
 
 export default function HomePage() {
@@ -11,6 +12,9 @@ export default function HomePage() {
             <View>
         <CreateCalendarEvent />
             </View >
+            <View>
+                <Api />
+            </View>
         </View>
     )
 }
