@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import LandingPage  from './Pages/LandingPage'
+import { createStackNavigator } from '@react-navigation/stack';
+import LandingPage from './Pages/LandingPage'
 import HomePage from './Pages/HomePage';
 import { createClient } from '@supabase/supabase-js';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
@@ -14,12 +14,20 @@ const supabase = createClient(
 export default function App() {
   return (
     <NavigationContainer>
-    <SessionContextProvider supabaseClient={supabase}>
-      <Stack.Navigator>
-        <Stack.Screen name="LandingPage" component={LandingPage}></Stack.Screen>
-        <Stack.Screen name="HomePage" component={HomePage}></Stack.Screen>
-      </Stack.Navigator>
-    </SessionContextProvider>
+      <SessionContextProvider supabaseClient={supabase}>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="LandingPage"
+            component={LandingPage}
+            options={{ title: 'Landing Page' }}
+          />
+          <Stack.Screen
+            name="HomePage"
+            component={HomePage}
+            options={{ title: 'Home Page' }}
+          />
+        </Stack.Navigator>
+      </SessionContextProvider>
     </NavigationContainer>
   );
 }

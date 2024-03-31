@@ -1,9 +1,8 @@
 import React from 'react';
-import { StyleSheet, Image, View, Button } from 'react-native';
+import { StyleSheet, Image, View, Button, Dimensions, ScrollView } from 'react-native-web';
 import LandingPageImage from '../assets/LandingPageImage.jpg'
 import SearchBar from '../components/SearchBar';
 import { useNavigation } from '@react-navigation/native';
-import CreateCalendarEvent from './CreateCalendarEvent';
 export default function LandingPage() {
     const navigation = useNavigation();
 
@@ -12,26 +11,23 @@ export default function LandingPage() {
     };
 
     return (
-        <View style={styles.container}>
+        <ScrollView 
+        style={styles.container} 
+        scrollEnabled={true} 
+        horizontal={false}>
             <Image style={styles.image} source={LandingPageImage} />
             <View style={styles.searchBarContainer}>
                 <SearchBar />
             <Button title="Take me home" onPress={goToHomePage} />
             </View>
-            <View>
-                <CreateCalendarEvent/>
-            </View>
-        </View>
+        </ScrollView>
     );
 }
 
+const { width, height } = Dimensions.get('window')
+
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
+    
     searchBarContainer: {
         position: 'absolute',
         top: '50%',
@@ -40,4 +36,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         zIndex: 1,
     },
+    image: {
+        alignItems: 'center',
+        width: width * 1,
+        height: height * 1,
+        resizeMode: 'cover'
+    }
 });

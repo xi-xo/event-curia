@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSession, useSupabaseClient, useSessionContext } from "@supabase/auth-helpers-react";
 import { View, Text, Button, StyleSheet, TextInput } from "react-native";
 import DateTimePicker from "react-datetime-picker";
+import DateTimePickerModal from "react-native-modal-datetime-picker"
 import { SafeAreaView } from "react-native-web";
 
 export default function CreateCalendarEvent() {
@@ -64,10 +65,6 @@ export default function CreateCalendarEvent() {
         })
     }
 
-    // console.log(session);
-    // console.log(start)
-    // console.log(eventName)
-    // console.log(eventDescription)
     return (
         <SafeAreaView style={styles.createEventContainer}>
             <View style={styles.createEventinnerContainer}>
@@ -75,9 +72,17 @@ export default function CreateCalendarEvent() {
                     <>
                         <Text>Hey{session.user.email}</Text>
                         <Text>Start of your event</Text>
-                        <DateTimePicker style={styles.dateTimeStart} onChange={setStart} value={start} />
+                        <DateTimePicker 
+                        style={styles.dateTimeStart} 
+                        onChange={setStart} 
+                        value={start} 
+                        />
                         <Text>End of your event</Text>
-                        <DateTimePicker style={styles.dateTimeEnd} onChange={setEnd} value={end} />
+                        <DateTimePicker 
+                        style={styles.dateTimeEnd} 
+                        onChange={setEnd} 
+                        value={end} 
+                        />
                         <Text>Event Name</Text>
                         <TextInput
                         style={styles.textInputName}
@@ -90,8 +95,14 @@ export default function CreateCalendarEvent() {
                         />
                         <hr />
                         <View style={styles.buttonContainer}>
-                            <Button title={"Create Event"} onPress={CreateCalendarEvent} />
-                            <Button title={"Sign Out"} onPress={signOut} />
+                            <Button 
+                            title={"Create Event"} 
+                            onPress={CreateCalendarEvent} 
+                            />
+                            <Button 
+                            title={"Sign Out"} 
+                            onPress={signOut} 
+                            />
                         </View>
                     </>
                 ) : (
@@ -122,7 +133,7 @@ const styles = StyleSheet.create({
         borderWidth: 3
     },
     buttonContainer: {
-        borderColor: "hot read",
+        borderColor: "red",
         borderWidth: 5,
         flexDirection: "row",
         justifyContent: "space-between",

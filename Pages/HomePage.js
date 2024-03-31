@@ -1,7 +1,8 @@
 import React from "react"
 import { View, Text, Button } from "react-native"
 import CreateCalendarEvent from "./CreateCalendarEvent"
-import Api from "../components/API"
+import Api from "../components/FetchEvents"
+import EventsList from "../components/EventsList"
 
 
 export default function HomePage() {
@@ -14,6 +15,9 @@ export default function HomePage() {
             </View >
             <View>
                 <Api />
+            </View>
+            <View>
+                <EventsList />
             </View>
         </View>
     )

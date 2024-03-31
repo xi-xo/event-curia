@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Text, View } from "react-native-web";
+import EventsList from "./EventsList";
 
-export default function Api() {
+export default function FetchEvents({ personalOAuthToken }) {
     const [events, setEvents] = useState([]);
 
-    const organizationId = '2066542046663'; // Replace 'YOUR_ORGANIZATION_ID' with your actual organization ID
+    const organizationId = '2066542046663';
 
     useEffect(() => {
-        const personalOAuthToken = 'WLCKG6QCZYMA4F5UH7BP'; // Replace 'YOUR_PERSONAL_OAUTH_TOKEN' with your actual personal OAuth token
+        const personalOAuthToken = 'WLCKG6QCZYMA4F5UH7BP';
 
         fetch(
             `https://www.eventbriteapi.com/v3/organizations/${organizationId}/events/`,
@@ -23,14 +23,9 @@ export default function Api() {
             setEvents(data.events || []);
         });
 
-    }, [organizationId]);
+    }, [organizationId, personalOAuthToken]);
 
     return (
-        <View>
-            <Text>Events</Text>
-            {events.map(event => (
-                <Text key={event.id}>{event.name.text}</Text>
-            ))}
-        </View>
+        <EventsList events={events} />
     );
 }
