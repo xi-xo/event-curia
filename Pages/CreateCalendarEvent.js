@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { useSession, useSupabaseClient, useSessionContext } from "@supabase/auth-helpers-react";
-import { View, Text, Button, StyleSheet, TextInput } from "react-native";
+import { View, Text, StyleSheet, TextInput, Pressable, ScrollView } from "react-native";
 import DateTimePicker from "react-datetime-picker";
-import DateTimePickerModal from "react-native-modal-datetime-picker"
-import { SafeAreaView } from "react-native-web";
 
 export default function CreateCalendarEvent() {
     const [start, setStart] = useState(new Date());
@@ -66,7 +64,7 @@ export default function CreateCalendarEvent() {
     }
 
     return (
-        <SafeAreaView style={styles.createEventContainer}>
+        <ScrollView style={styles.createEventContainer}>
             <View style={styles.createEventinnerContainer}>
                 {session ? (
                     <>
@@ -95,21 +93,21 @@ export default function CreateCalendarEvent() {
                         />
                         <hr />
                         <View style={styles.buttonContainer}>
-                            <Button 
-                            title={"Create Event"} 
-                            onPress={CreateCalendarEvent} 
-                            />
-                            <Button 
-                            title={"Sign Out"} 
-                            onPress={signOut} 
-                            />
+                            <Pressable onPress={CreateCalendarEvent}>
+                                <Text>Create Event</Text>
+                            </Pressable>
+                            <Pressable onPress={signOut}>
+                                <Text>Sign Out</Text>
+                            </Pressable>
                         </View>
                     </>
                 ) : (
-                    <Button title={"Sign In With Google"} onPress={googleSignIn} />
+                    <Pressable onPress={googleSignIn}>
+                        <Text>Sign In With Google</Text>
+                    </Pressable>
                 )}
             </View>
-        </SafeAreaView>
+        </ScrollView>
     )
 }
 
