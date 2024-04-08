@@ -1,9 +1,12 @@
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import {Provider as PaperProvider} from 'react-native-paper'
 import { createStackNavigator } from '@react-navigation/stack';
-import LandingPage from './Pages/LandingPage'
-import HomePage from './Pages/HomePage';
 import { createClient } from '@supabase/supabase-js';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
+import CustomHeader from './components/CustomHeader';
+import LandingPage from './Pages/LandingPage';
+import HomePage from './Pages/HomePage';
 
 const Stack = createStackNavigator();
 const supabase = createClient(
@@ -13,21 +16,35 @@ const supabase = createClient(
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <SessionContextProvider supabaseClient={supabase}>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="LandingPage"
-            component={LandingPage}
-            options={{ title: 'Landing Page' }}
-          />
-          <Stack.Screen
-            name="HomePage"
-            component={HomePage}
-            options={{ title: 'Home Page' }}
-          />
-        </Stack.Navigator>
-      </SessionContextProvider>
-    </NavigationContainer>
+    <PaperProvider>
+
+      <NavigationContainer>
+        <SessionContextProvider supabaseClient={supabase}>
+          <Stack.Navigator
+            screenOptions={{
+              header: ({ navigation, route, options }) => (
+                <CustomHeader
+                  title={"EventCuria"}
+                  navigation={navigation}
+                  isDark={true} // You can pass a prop to toggle between dark and light mode
+                />
+              ),
+            }}
+          >
+            <Stack.Screen
+              name="LandingPage"
+              component={LandingPage}
+              options={{ title: 'Landing Page' }}
+            />
+            <Stack.Screen
+              name="HomePage"
+              component={HomePage}
+              options={{ title: 'Home Page' }}
+              showBackButton={true}
+            />
+          </Stack.Navigator>
+        </SessionContextProvider>
+      </NavigationContainer>
+    </PaperProvider>
   );
 }

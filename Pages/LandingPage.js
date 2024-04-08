@@ -17,10 +17,7 @@ export default function LandingPage() {
             horizontal={false}>
             <Image style={styles.image} source={LandingPageImage} />
             <View style={styles.searchBarContainer}>
-                <Pressable onPress={GoToHomePage}>
-                    <SearchBar />
-                    <Text>Take Me Home</Text>
-                </Pressable>
+                <SearchBar />
             </View>
         </ScrollView>
     );
