@@ -32,7 +32,7 @@ export default function App() {
             }}
           >
             <Stack.Screen
-              name="LandingPage"
+              name="EventCuria"
               component={LandingPage}
               options={{ title: 'Landing Page' }}
             />
