@@ -35,7 +35,7 @@ export default function CustomHeader({ title, navigation }) {
 
 
     return (
-        <Appbar.Header statusBarHeight={1} dark={true} style={{ backgroundColor: '#143D52' }}>
+        <Appbar.Header statusBarHeight={40} dark={true} style={{ backgroundColor: '#143D52' }}>
             {showBackButton && <Appbar.BackAction onPress={goBack} />}
             <Appbar.Content title={pageTitle} titleStyle={{alignSelf: 'center'}} />
             <Menu

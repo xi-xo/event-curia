@@ -40,10 +40,9 @@ const styles = StyleSheet.create({
     input: {
         height: 40,
         flex: 1,
-        width: '10%',
         borderColor: 'gray',
         borderWidth: 2,
         paddingHorizontal: 10,
-        marginRight: 2,
+        marginRight: 20
     },
 });
