@@ -17,7 +17,6 @@ const supabase = createClient(
 export default function App() {
   return (
     <PaperProvider>
-
       <NavigationContainer>
         <SessionContextProvider supabaseClient={supabase}>
           <Stack.Navigator
