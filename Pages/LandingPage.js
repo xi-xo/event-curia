@@ -1,14 +1,9 @@
 import React from 'react';
-import { StyleSheet, Image, View, Text, Dimensions, ScrollView, Pressable } from 'react-native';
+import { StyleSheet, Image, View, Dimensions, ScrollView, Pressable } from 'react-native';
 import LandingPageImage from '../assets/LandingPageImage.jpg'
 import SearchBar from '../components/SearchBar';
 import { useNavigation } from '@react-navigation/native';
 export default function LandingPage() {
-    const navigation = useNavigation();
-
-    const GoToHomePage = () => {
-        navigation.navigate('HomePage')
-    };
 
     return (
         <ScrollView

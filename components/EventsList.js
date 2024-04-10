@@ -1,13 +1,22 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, ScrollView } from "react-native";
+import EventCard from "./EventCard";
+import { useNavigation } from '@react-navigation/native'
 
 export default function EventsList({ events }) {
+    const navigation = useNavigation()
+
+    const handleEventPress = (event) => {
+        navigation.navigate("EventDetail", { event })
+    };
+
     return (
-        <View>
-            <Text>Events</Text>
-            {events && events.map(event => (
-                <Text key={event.id}>{event.name.text}</Text>
-            ))}
-        </View>
+        <ScrollView>
+            <View>
+                {events && events.map(event => (
+                    <EventCard key={event.id} event={event} onPress={() => handleEventPress(event)} />
+                ))}
+            </View>
+        </ScrollView>
     );
 }

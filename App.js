@@ -7,6 +7,7 @@ import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import CustomHeader from './components/CustomHeader';
 import LandingPage from './Pages/LandingPage';
 import HomePage from './Pages/HomePage';
+import EventDetails from './components/EventDetails';
 
 const Stack = createStackNavigator();
 const supabase = createClient(
@@ -40,6 +41,11 @@ export default function App() {
               component={HomePage}
               options={{ title: 'Home Page' }}
               showBackButton={true}
+            />
+            <Stack.Screen 
+            name="EventDetail" 
+            component={EventDetails}
+            showBackButton={true}
             />
           </Stack.Navigator>
         </SessionContextProvider>

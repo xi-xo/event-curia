@@ -1,10 +1,23 @@
-import React from "react";
-import { View, StyleSheet, Text, Image, Pressable } from "react-native";
+import React, { useEffect } from 'react';
+import { View, Text, Image, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native'
 
-export default function EventCard({ event, onPress }) {
+export default function EventDetails({ event }) {
+    const navigation = useNavigation()
+
+    useEffect(() => {
+        if (event && event.name && event.name.text) {
+            console.log("EventDetails: Setting screen title to:", event.name.text)
+            navigation.setOptions({title: event.name.text})
+        }
+    },[event, navigation])
+
+    if (!event) {
+        return <Text>Loading...</Text>;
+    }
+
     return (
-        <Pressable onPress={onPress}>
-            <View style={styles.card}>
+        <View style={styles.details}>
                 <Text style={styles.title}>{event.name.text}</Text>
                 <Image
                     style={styles.image}
@@ -12,18 +25,14 @@ export default function EventCard({ event, onPress }) {
                     resizeMode="cover"
                 />
                 <Text style={styles.description}>{event.description.text}</Text>
+                <Text style={styles.capacity}>{event.capacity}</Text>
             </View>
-        </Pressable>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
-    card: {
-        backgroundColor: "#fff",
-        borderRadius: 8,
+    details: {
         padding: 16,
-        marginBottom: 16,
-        elevation: 4,
     },
     title: {
         fontSize: 18,
@@ -44,4 +53,4 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         marginBottom: 8,
     },
-})
+});
