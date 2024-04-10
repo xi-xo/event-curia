@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Appbar, Menu } from 'react-native-paper';
-import { useNavigation, useNavigationState } from '@react-navigation/native'; // Import useNavigationState hook
+import { useNavigationState } from '@react-navigation/native';
 
 export default function CustomHeader({ title, navigation }) {
     const [menuVisible, setMenuVisible] = useState(false);
