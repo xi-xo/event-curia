@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useSession, useSupabaseClient, useSessionContext } from "@supabase/auth-helpers-react";
-import { View, Text, Button, StyleSheet, TextInput } from "react-native";
+import { View, Text, StyleSheet, TextInput, Pressable, ScrollView } from "react-native";
 import DateTimePicker from "react-datetime-picker";
-import { SafeAreaView } from "react-native-web";
 
 export default function CreateCalendarEvent() {
     const [start, setStart] = useState(new Date());
@@ -64,69 +63,78 @@ export default function CreateCalendarEvent() {
         })
     }
 
-    // console.log(session);
-    // console.log(start)
-    // console.log(eventName)
-    // console.log(eventDescription)
     return (
-        <SafeAreaView style={styles.createEventContainer}>
-            <View style={styles.createEventinnerContainer}>
+        <ScrollView style={styles.createEventContainer}>
+            <View style={styles.createEventInnerContainer}>
                 {session ? (
                     <>
                         <Text>Hey{session.user.email}</Text>
                         <Text>Start of your event</Text>
-                        <DateTimePicker style={styles.dateTimeStart} onChange={setStart} value={start} />
+                        <DateTimePicker 
+                            style={styles.dateTimePicker} 
+                            onChange={setStart} 
+                            value={start} 
+                        />
                         <Text>End of your event</Text>
-                        <DateTimePicker style={styles.dateTimeEnd} onChange={setEnd} value={end} />
+                        <DateTimePicker 
+                            style={styles.dateTimePicker} 
+                            onChange={setEnd} 
+                            value={end} 
+                        />
                         <Text>Event Name</Text>
                         <TextInput
-                        style={styles.textInputName}
-                        onChangeText={(e) => setEventName(e)}
+                            style={styles.textInput}
+                            onChangeText={(e) => setEventName(e)}
                         />
                         <Text>Event description</Text>
                         <TextInput
-                        style={styles.textInputDescription}
-                        onChangeText={(e) => setEventDescription(e)}
+                            style={styles.textInput}
+                            onChangeText={(e) => setEventDescription(e)}
                         />
                         <hr />
                         <View style={styles.buttonContainer}>
-                            <Button title={"Create Event"} onPress={CreateCalendarEvent} />
-                            <Button title={"Sign Out"} onPress={signOut} />
+                            <Pressable onPress={CreateCalendarEvent}>
+                                <Text>Create Event</Text>
+                            </Pressable>
+                            <Pressable onPress={signOut}>
+                                <Text>Sign Out</Text>
+                            </Pressable>
                         </View>
                     </>
                 ) : (
-                    <Button title={"Sign In With Google"} onPress={googleSignIn} />
+                    <Pressable onPress={googleSignIn}>
+                        <Text>Sign In With Google</Text>
+                    </Pressable>
                 )}
             </View>
-        </SafeAreaView>
+        </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
     createEventContainer: {
-        borderColor: "red",
-        borderWidth: 2,
         flex: 1,
-        },
-    createEventinnerContainer: {
-        borderColor: "blue",
-        borderWidth: 2,
+    },
+    createEventInnerContainer: {
+        width: "100%",
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+    },
+    textInput: {
+        borderColor: "gray",
+        borderWidth: 1,
+        marginBottom: 10,
+        paddingHorizontal: 10,
+        width: "100%", // Ensure TextInput fills the container
+    },
+    dateTimePicker: {
+        marginBottom: 10,
+        maxWidth: "100%", // Ensure DateTimePicker fills the container
         width: "100%",
     },
-    textInputName: {
-        borderColor: "gray",
-        borderWidth: 3
-    },
-    textInputDescription: {
-        borderColor: "gray",
-        borderWidth: 3
-    },
     buttonContainer: {
-        borderColor: "hot read",
-        borderWidth: 5,
         flexDirection: "row",
         justifyContent: "space-between",
         marginTop: 20,
-        width: "100%",
     },
 });

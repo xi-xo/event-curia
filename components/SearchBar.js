@@ -1,24 +1,30 @@
 import React, { useState } from "react";
-import { TextInput, View, Button} from 'react-native'
+import { TextInput, View, Text, Pressable } from 'react-native'
 import { StyleSheet } from "react-native";
 
 export default function SearchBar() {
     const [searchQuery, setSearchQuery] = useState('')
 
-    const handleSearch = () => {
-        onSearch(searchQuery)
+    const OnSearch = (query) => {
+        console.log("Searching for:", query);
+    }
+
+    const HandleSearch = () => {
+        OnSearch(searchQuery)
     };
 
     return (
         <View style={styles.container}>
-        <Button title="Search" onPress={handleSearch}/>
-        <TextInput
-            style={styles.input}
-            onChangeText={text => setSearchQuery(text)}
-            value={searchQuery}
-            placeholder="Search For Events"
-        />
-    </View>
+            <Pressable onPress={HandleSearch}>
+                <Text>Search</Text>
+            </Pressable>
+            <TextInput
+                style={styles.input}
+                onChangeText={text => setSearchQuery(text)}
+                value={searchQuery}
+                placeholder="Search For Events"
+            />
+        </View>
     );
 };
 
@@ -32,12 +38,11 @@ const styles = StyleSheet.create({
         borderColor: 'white',
     },
     input: {
-        height:40,
+        height: 40,
         flex: 1,
-        width: '10%',
         borderColor: 'gray',
         borderWidth: 2,
-        paddingHorizontal:10,
-        marginRight: 2,
+        paddingHorizontal: 10,
+        marginRight: 20
     },
 });
