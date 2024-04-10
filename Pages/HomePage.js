@@ -6,15 +6,15 @@ import EventsList from "../components/EventsList"
 
 export default function HomePage() {
     return (
-        <ScrollView>
-            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                <View>
-                    <Api />
-                </View>
+        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+            <View>
+                <Api />
+            </View>
+            <ScrollView>
                 <View>
                     <EventsList />
                 </View>
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </View>
     )
 }

@@ -2,6 +2,8 @@ import React from "react";
 import { View, StyleSheet, Text, Image, Pressable } from "react-native";
 
 export default function EventCard({ event, onPress }) {
+
+
     return (
         <Pressable onPress={onPress}>
             <View style={styles.card}>

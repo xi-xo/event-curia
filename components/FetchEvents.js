@@ -27,5 +27,6 @@ export default function FetchEvents({ personalOAuthToken }) {
 
     return (
         <EventsList events={events} />
+        
     );
 }

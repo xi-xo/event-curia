@@ -1,16 +1,18 @@
 import React, { useEffect } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-export default function EventDetails({ event }) {
-    const navigation = useNavigation()
+export default function EventDetails() {
+    const navigation = useNavigation();
+    const route = useRoute();
+    const { event } = route.params;
 
     useEffect(() => {
         if (event && event.name && event.name.text) {
             console.log("EventDetails: Setting screen title to:", event.name.text)
-            navigation.setOptions({title: event.name.text})
+            navigation.setOptions({ title: event.name.text });
         }
-    },[event, navigation])
+    }, [event, navigation]);
 
     if (!event) {
         return <Text>Loading...</Text>;
@@ -18,15 +20,15 @@ export default function EventDetails({ event }) {
 
     return (
         <View style={styles.details}>
-                <Text style={styles.title}>{event.name.text}</Text>
-                <Image
-                    style={styles.image}
-                    source={{ uri: event.logo.original.url }}
-                    resizeMode="cover"
-                />
-                <Text style={styles.description}>{event.description.text}</Text>
-                <Text style={styles.capacity}>{event.capacity}</Text>
-            </View>
+            <Text style={styles.title}>{event.name.text}</Text>
+            <Image
+                style={styles.image}
+                source={{ uri: event.logo.original.url }}
+                resizeMode="cover"
+            />
+            <Text style={styles.description}>{event.description.text}</Text>
+            <Text style={styles.capacity}>{event.capacity}</Text>
+        </View>
     );
 }
 
@@ -48,8 +50,8 @@ const styles = StyleSheet.create({
         color: "#666",
     },
     image: {
-        width: "100%", // Adjust width as needed
-        height: 200, // Adjust height as needed
+        width: "100%",
+        height: 200,
         borderRadius: 8,
         marginBottom: 8,
     },
