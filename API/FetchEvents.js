@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import EventsList from "./EventsList";
+import EventsList from "../components/EventsList";
 
 export default function FetchEvents({ personalOAuthToken }) {
     const [events, setEvents] = useState([]);
@@ -7,7 +7,6 @@ export default function FetchEvents({ personalOAuthToken }) {
     const organizationId = '2066542046663';
 
     useEffect(() => {
-        const personalOAuthToken = 'WLCKG6QCZYMA4F5UH7BP';
 
         fetch(
             `https://www.eventbriteapi.com/v3/organizations/${organizationId}/events/`,
