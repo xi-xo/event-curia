@@ -4,10 +4,10 @@ import {Provider as PaperProvider} from 'react-native-paper'
 import { createStackNavigator } from '@react-navigation/stack';
 import { createClient } from '@supabase/supabase-js';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
-import CustomHeader from './components/CustomHeader';
+import CustomHeader from './components/navigation/CustomHeader';
 import LandingPage from './Pages/LandingPage';
 import HomePage from './Pages/HomePage';
-import EventDetails from './components/EventDetails';
+import EventDetails from './components/events/EventDetails';
 
 const Stack = createStackNavigator();
 const supabase = createClient(

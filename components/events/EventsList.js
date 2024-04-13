@@ -11,7 +11,7 @@ export default function EventsList({ events }) {
         navigation.navigate("EventDetail", { event });
     };
 
-    const scrollViewHeight = events ? events.length * (window.height * 0.3) : 0;
+    const scrollViewHeight = events ? events.length * (window.height * 0.44) : 0;
 
     return (
         <View style={styles.container}>

@@ -2,7 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import FetchEventsAPI from "../API/FetchEvents";
 import FetchVenuesAPI from "../API/FetchVenues"
-import EventsList from "../components/EventsList";
+import EventsList from "../components/events/EventsList"
 
 export default function HomePage() {
     return (

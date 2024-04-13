@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
+import VenuesList from '../components/venues/VenuesList';
 
 export default function FetchEventsVenue({ personalOAuthToken }) {
     const [venues, setVenues] = useState([]);
@@ -36,5 +37,7 @@ export default function FetchEventsVenue({ personalOAuthToken }) {
         return <Text>Error fetching venues: {error.message}</Text>;
     }
 
-    return null;
+    return (
+        <VenuesList venues={venues} />
+    );
 }
