@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import EventsList from "../components/events/EventsList"
 
-export default function FetchEvents({ personalOAuthToken }) {
+export default function FetchEvents({ personalOAuthToken, venues }) {
     const [events, setEvents] = useState([]);
 
     const organizationId = '2066542046663';
@@ -19,10 +19,14 @@ export default function FetchEvents({ personalOAuthToken }) {
         .then(response => response.json())
         .then(data => {
             console.log('Fetched events:', data);
-            setEvents(data.events || []);
+            const eventsWithVenues = data.events.map(event => {
+                const venue = venues.find(venue => venue.id === event.venue_id);
+                return { ...event, venue };
+            });
+            setEvents(eventsWithVenues);
         });
 
-    }, [organizationId, personalOAuthToken]);
+    }, [organizationId, personalOAuthToken, venues]);
 
     return (
         <EventsList events={events} />

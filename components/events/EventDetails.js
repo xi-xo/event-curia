@@ -5,9 +5,10 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 export default function EventDetails() {
     const navigation = useNavigation();
     const route = useRoute();
-    const { event, venues } = route.params;
+    const { event} = route.params;
+    const { venue } = event
     console.log("I am event from route params:", event);
-    console.log("I am venues from route params:", venues);
+    console.log("I am venues from route params:", venue);
 
     useEffect(() => {
         if (event && event.name && event.name.text) {
@@ -17,8 +18,8 @@ export default function EventDetails() {
     }, [event, navigation]);
 
     // Check if event and venues are present
-    if (!event || !venues) {
-        console.log("Event or venues not found:", event, venues);
+    if (!event || !venue) {
+        console.log("Event or venues not found:", event, venue);
         return (
             <View style={styles.errorContainer}>
                 <Text>Error: Event or venues not found</Text>
@@ -26,12 +27,8 @@ export default function EventDetails() {
         );
     }
 
-    // Find the venue associated with the event
-    const venue = venues.find(venue => venue.id === event.venue_id);
-
     // Log the event details and venue
     console.log("Event details:", event);
-    console.log("Venues:", venues);
     console.log("Associated Venue:", venue);
 
     return (

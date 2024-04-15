@@ -5,7 +5,7 @@ export default function EventCard({ event, onPress }) {
 
 
     return (
-        <Pressable onPress={onPress}>
+        <Pressable onPress={() => onPress(event)}>
             <View style={styles.card}>
                 <Text style={styles.title}>{event.name.text}</Text>
                 <Image
