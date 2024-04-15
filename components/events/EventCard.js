@@ -10,7 +10,7 @@ export default function EventCard({ event, onPress }) {
                 <Text style={styles.title}>{event.name.text}</Text>
                 <Image
                     style={styles.image}
-                    source={{ uri: event.logo.original.url }}
+                    source={{ uri: event && event.logo && event.logo.original && event.logo.original.url }}
                     resizeMode="cover"
                 />
                 <Text style={styles.description}>{event.description.text}</Text>
@@ -23,6 +23,8 @@ const styles = StyleSheet.create({
     card: {
         backgroundColor: "#fff",
         borderRadius: 8,
+        borderWidth: 1,
+        borderColor: "grey",
         padding: 16,
         marginBottom: 16,
         elevation: 4,
@@ -33,7 +35,7 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     description: {
-        fontSize: 16,
+        fontSize: 18,
         marginBottom: 8,
     },
     capacity: {

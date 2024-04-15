@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Image, View, Dimensions, ScrollView, Pressable } from 'react-native';
 import LandingPageImage from '../assets/LandingPageImage.jpg'
 import SearchBar from '../components/navigation/SearchBar';
+
 export default function LandingPage() {
 
     return (

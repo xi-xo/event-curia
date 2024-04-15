@@ -17,26 +17,12 @@ export default function FetchEventsVenue({ personalOAuthToken }) {
                 }
             }
         )
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to fetch venues');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Fetched venues:', data);
-            setVenues(data.venues || []);
-        })
-        .catch(error => {
-            console.error('Error fetching venues:', error);
-            setError(error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                console.log('Fetched venues: as data', data);
+                setVenues(data.venues);
+            })
     }, [organizationId, personalOAuthToken]);
-
-    if (error) {
-        return <Text>Error fetching venues: {error.message}</Text>;
-    }
-
     return (
         <VenuesList venues={venues} />
     );
