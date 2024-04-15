@@ -2,18 +2,23 @@ import React from "react";
 import { View, StyleSheet, Text, Image, Pressable } from "react-native";
 
 export default function EventCard({ event, onPress }) {
-
+    const { name, logo, description, status } = event;
 
     return (
         <Pressable onPress={() => onPress(event)}>
             <View style={styles.card}>
-                <Text style={styles.title}>{event.name.text}</Text>
+                <View style={styles.titleContainer}>
+                    <Text style={styles.title}>{name.text}</Text>
+                    <Text style={[styles.status, status === 'completed' ? styles.completed : styles.live]}>
+                        {status === 'completed' ? 'Completed' : 'Live'}
+                    </Text>
+                </View>
                 <Image
                     style={styles.image}
-                    source={{ uri: event && event.logo && event.logo.original && event.logo.original.url }}
+                    source={{ uri: logo.original.url }}
                     resizeMode="cover"
                 />
-                <Text style={styles.description}>{event.description.text}</Text>
+                <Text style={styles.description}>{description.text}</Text>
             </View>
         </Pressable>
     )
@@ -21,6 +26,7 @@ export default function EventCard({ event, onPress }) {
 
 const styles = StyleSheet.create({
     card: {
+        marginTop: 2,
         backgroundColor: "#fff",
         borderRadius: 8,
         borderWidth: 1,
@@ -29,10 +35,25 @@ const styles = StyleSheet.create({
         marginBottom: 16,
         elevation: 4,
     },
+    titleContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 8,
+    },
     title: {
         fontSize: 18,
         fontWeight: "bold",
-        marginBottom: 8,
+    },
+    status: {
+        fontWeight: 'bold',
+        color: 'green', // Default color, will be overridden based on status
+    },
+    completed: {
+        color: 'red',
+    },
+    live: {
+        color: 'green',
     },
     description: {
         fontSize: 18,
