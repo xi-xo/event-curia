@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import EventsList from "../components/events/EventsList"
+import { View } from "react-native";
 
 export default function FetchEvents({ personalOAuthToken, venues }) {
     const [events, setEvents] = useState([]);
@@ -29,7 +30,9 @@ export default function FetchEvents({ personalOAuthToken, venues }) {
     }, [organizationId, personalOAuthToken, venues]);
 
     return (
+        <View style={{ flex:1 }}>
         <EventsList events={events} />
+        </View>
         
     );
 }

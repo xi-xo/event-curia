@@ -12,7 +12,7 @@ export default function EventsList({ events, venue }) {
 
     return (
         <View style={styles.container}>
-            <ScrollView contentContainerStyle={styles.scrollViewContent}>
+            <ScrollView style={styles.scrollView}>
                 {events && events.map(event => (
                     <EventCard key={event.id} event={event} venue={venue} onPress={() => handleEventPress(event, venue)} />
                 ))}
@@ -25,7 +25,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    scrollViewContent: {
-        flexGrow: 1,
+    scrollView: {
+        flex: 1,
+        maxHeight: 850, // Adjust the maxHeight as needed
+        backgroundColor: "lightgrey",
     },
 });

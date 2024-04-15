@@ -6,15 +6,14 @@ import SearchBar from '../components/navigation/SearchBar';
 export default function LandingPage() {
 
     return (
-        <ScrollView
-            style={styles.container}
-            scrollEnabled={true}
-            horizontal={false}>
+        <View>
+
             <Image style={styles.image} source={LandingPageImage} />
             <View style={styles.searchBarContainer}>
                 <SearchBar />
             </View>
-        </ScrollView>
+        </View>
+
     );
 }
 
