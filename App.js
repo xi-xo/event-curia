@@ -1,13 +1,13 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import {Provider as PaperProvider} from 'react-native-paper'
+import { Provider as PaperProvider } from 'react-native-paper'
 import { createStackNavigator } from '@react-navigation/stack';
 import { createClient } from '@supabase/supabase-js';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
-import CustomHeader from './components/CustomHeader';
+import CustomHeader from './components/navigation/CustomHeader';
 import LandingPage from './Pages/LandingPage';
 import HomePage from './Pages/HomePage';
-import EventDetails from './components/EventDetails';
+import EventDetails from './components/events/EventDetails';
 
 const Stack = createStackNavigator();
 const supabase = createClient(
@@ -42,10 +42,13 @@ export default function App() {
               options={{ title: 'Home Page' }}
               showBackButton={true}
             />
-            <Stack.Screen 
-            name="EventDetail" 
-            component={EventDetails}
-            showBackButton={true}
+            <Stack.Screen
+              name="EventDetail"
+              component={EventDetails}
+              options={({ route }) => ({
+                headerTitle: route.params.event.name.text
+              })}
+              showBackButton={true}
             />
           </Stack.Navigator>
         </SessionContextProvider>

@@ -1,20 +1,21 @@
 import React from 'react';
 import { StyleSheet, Image, View, Dimensions, ScrollView, Pressable } from 'react-native';
 import LandingPageImage from '../assets/LandingPageImage.jpg'
-import SearchBar from '../components/SearchBar';
-import { useNavigation } from '@react-navigation/native';
+import SearchBar from '../components/navigation/SearchBar';
+import PostEvent from '../API/PostEvent';
+
 export default function LandingPage() {
 
     return (
-        <ScrollView
-            style={styles.container}
-            scrollEnabled={true}
-            horizontal={false}>
+        <View>
+
             <Image style={styles.image} source={LandingPageImage} />
             <View style={styles.searchBarContainer}>
                 <SearchBar />
+                <PostEvent />
             </View>
-        </ScrollView>
+        </View>
+
     );
 }
 

@@ -1,15 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View } from "react-native";
-import FetchEventsAPI from "../API/FetchEvents";
-import FetchVenuesAPI from "../API/FetchVenues"
-import EventsList from "../components/EventsList";
+import FetchEvents from "../API/FetchEvents";
+import { REACT_APP_ORGANIZATION_ID, REACT_APP_API_TOKEN } from '@env';
 
 export default function HomePage() {
+    const [venues, setVenues] = useState([]);
+
+    useEffect(() => {
+        fetch(
+            `https://www.eventbriteapi.com/v3/organizations/${ REACT_APP_ORGANIZATION_ID}/venues/`,
+            {
+                headers: {
+                    'Authorization': `Bearer ${REACT_APP_API_TOKEN}`
+                }
+            }
+        )
+            .then(response => response.json())
+            .then(data => {
+                console.log('Fetched venues: as data', data);
+                setVenues(data.venues);
+            })
+    }, [REACT_APP_ORGANIZATION_ID, REACT_APP_API_TOKEN]);
+
     return (
         <View style={{ flex: 1 }}>
-            <FetchEventsAPI personalOAuthToken = 'WLCKG6QCZYMA4F5UH7BP' />
-            <FetchVenuesAPI personalOAuthToken = 'WLCKG6QCZYMA4F5UH7BP' />
-            <EventsList />
+            <FetchEvents REACT_APP_API_TOKEN={REACT_APP_API_TOKEN} venues={venues} />
         </View>
     );
 }
