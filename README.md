@@ -10,21 +10,25 @@ Responsive Design: Enjoy a seamless experience on both Android and iOS devices.
 ## Installation
 To run EventCuria locally on your machine, follow these simple steps:
 
-Clone the Repository:
+**Clone the Repository:**
    ```bash
    git clone <repository_url>
-
+```
 **Navigate to the Project Directory:**
 
 ```bash
-Copy code
 cd eventcuria
+```
+```bash
+Copy code
 Install Dependencies:
-
-bash
+```
+```bash
 Copy code
 npm install
-Set Up Environment Variables:
+```
+
+##Set Up Environment Variables:##
 
 Create a file named .env in the root directory of the project.
 Add your Eventbrite organization ID and API token to the .env file in the following format:
@@ -34,16 +38,17 @@ REACT_APP_ORGANIZATION_ID=your_organization_id
 REACT_APP_API_TOKEN=your_api_token
 Start the Development Server:
 
-bash
+```bash
 Copy code
-npm start
-Run the App on Your Device:
+npx expo start
+```
+**Run the App on Your Device:**
 Follow the instructions in the terminal to open the app
-Usage
+**Usage**
 Explore Events: Browse through a curated list of events and find the ones that interest you.
 Sign Up: Click on an event to view details and sign up with ease.
-Technologies Used
+**Technologies Used**
 React Native
 Eventbrite API
 JavaScript
-CSS
+Supabase
