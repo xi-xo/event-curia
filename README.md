@@ -1,22 +1,24 @@
 # <span style="font-size:36px;">EventCuria</span>
 Welcome to EventCuria – your go-to app for discovering and signing up for exciting events! EventCuria is a mobile application built with React Native that brings the world of events to your fingertips. Whether you're looking for workshops, meetups, or concerts, EventCuria has got you covered.
 
-Features
+## Features
 Discover Events: Explore a wide range of upcoming events in your area or around the world.
 Sign Up Effortlessly: Easily sign up for events directly from the app with just a few taps.
 Stay Informed: Get detailed event information including name, description, date, time, venue, and capacity.
 Responsive Design: Enjoy a seamless experience on both Android and iOS devices.
-Installation
+
+## Installation
 To run EventCuria locally on your machine, follow these simple steps:
 
 Clone the Repository:
 
-bash
-Copy code
-git clone <repository_url>
-Navigate to the Project Directory:
+**Clone the Repository:**
+   ```bash
+   git clone <repository_url>
 
-bash
+**Navigate to the Project Directory:**
+
+```bash
 Copy code
 cd eventcuria
 Install Dependencies:
