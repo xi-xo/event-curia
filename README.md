@@ -1,4 +1,4 @@
-EventCuria
+# <span style="font-size:36px;">EventCuria</span>
 Welcome to EventCuria – your go-to app for discovering and signing up for exciting events! EventCuria is a mobile application built with React Native that brings the world of events to your fingertips. Whether you're looking for workshops, meetups, or concerts, EventCuria has got you covered.
 
 Features
