@@ -11,7 +11,7 @@ Responsive Design: Enjoy a seamless experience on both Android and iOS devices.
 To run EventCuria locally on your machine, follow these simple steps:
 
 Clone the Repository:
-   ``bash
+   ```bash
    git clone <repository_url>
 
 **Navigate to the Project Directory:**
