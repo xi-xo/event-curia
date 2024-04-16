@@ -16,7 +16,7 @@ Clone the Repository:
 
 **Navigate to the Project Directory:**
 
-``bash
+```bash
 Copy code
 cd eventcuria
 Install Dependencies:
@@ -38,8 +38,7 @@ bash
 Copy code
 npm start
 Run the App on Your Device:
-
-Follow the instructions in the terminal to open the app on your device or emulator.
+Follow the instructions in the terminal to open the app
 Usage
 Explore Events: Browse through a curated list of events and find the ones that interest you.
 Sign Up: Click on an event to view details and sign up with ease.
