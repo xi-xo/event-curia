@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Image, View, Dimensions, ScrollView, Pressable } from 'react-native';
 import LandingPageImage from '../assets/LandingPageImage.jpg'
 import SearchBar from '../components/navigation/SearchBar';
+import PostEvent from '../API/PostEvent';
 
 export default function LandingPage() {
 
@@ -11,6 +12,7 @@ export default function LandingPage() {
             <Image style={styles.image} source={LandingPageImage} />
             <View style={styles.searchBarContainer}>
                 <SearchBar />
+                <PostEvent />
             </View>
         </View>
 

@@ -4,6 +4,9 @@ import { View, StyleSheet, Text, Image, Pressable } from "react-native";
 export default function EventCard({ event, onPress }) {
     const { name, logo, description, status } = event;
 
+    const imageUrl = logo ? logo.original.url : 'url_of_your_default_image';
+
+
     return (
         <Pressable onPress={() => onPress(event)}>
             <View style={styles.card}>
@@ -15,7 +18,7 @@ export default function EventCard({ event, onPress }) {
                 </View>
                 <Image
                     style={styles.image}
-                    source={{ uri: logo.original.url }}
+                    source={{ uri: imageUrl }}
                     resizeMode="cover"
                 />
                 <Text style={styles.description}>{description.text}</Text>

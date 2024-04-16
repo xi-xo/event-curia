@@ -36,53 +36,71 @@ export default function EventDetails() {
 
     return (
         <View style={styles.container}>
-            <EventHeader eventName={event.name.text} logoUrl={event.logo.original.url} description={event.description.text}/>
-            <EventInfo capacity={event.capacity} status={event.status} startDate={startDate} startTime={startTime} endDate={endDate} endTime={endTime} />
-            <EventVenue venueName={venue.name} mapImage={mapImage} />
+            <EventHeader eventName={event.name.text} logoUrl={event.logo.original.url} description={event.description.text} />
+            <EventInfo 
+                capacity={event.capacity} 
+                status={event.status} 
+                startDate={startDate} 
+                startTime={startTime} 
+                endDate={endDate} 
+                endTime={endTime} 
+            />
+            <EventVenue 
+            venueName={venue.name} 
+            venueAddress={venue.address.address_1}
+            venueCity={venue.address.city}
+            venuePostCode={venue.address.region}
+            venueRegion={venue.address.postal_code}
+            mapImage={mapImage} 
+            />
         </View>
     );
 }
 
-const EventHeader = ({ eventName, logoUrl, description, status }) => (
+const EventHeader = ({ eventName, logoUrl, description }) => (
     <View style={styles.header}>
-        <View style={styles.titleContainer}>
-            <Text style={styles.title}>{eventName}</Text>
-        </View>
+        <Text style={styles.title}>{eventName}</Text>
         <Image style={styles.logo} source={{ uri: logoUrl }} resizeMode="cover" />
         <Text style={styles.description}>{description}</Text>
     </View>
 );
 
-const EventInfo = ({ capacity, status, startDate, startTime, endDate, endTime }) => (
+const EventInfo = ({ capacity, startDate, startTime, endDate, endTime }) => (
     <View style={styles.info}>
-        <EventInfoItem title="Capacity" value={capacity} />
-        <EventInfoItem title="Date" value={startDate} />
-        <EventInfoItem title="Time" value={startTime} />
-        <EventInfoItem title="End Date" value={endDate} />
-        <EventInfoItem title="End Time" value={endTime} />
+        <View style={styles.infoItem}>
+            <Text style={styles.infoTitle}>Event Start</Text>
+            <Text>Date: {startDate}</Text>
+            <Text>Time: {startTime}</Text>
+        </View>
+        <View style={styles.infoItem}>
+            <Text style={styles.infoTitle}>Event End</Text>
+            <Text>Date: {endDate}</Text>
+            <Text>Time: {endTime}</Text>
+        </View>
+        <View style={styles.infoItem}>
+            <Text style={styles.infoTitle}>People Capacity</Text>
+            <Text>{capacity}</Text>
+        </View>
     </View>
 );
 
-const EventInfoItem = ({ title, value }) => (
-    <View style={styles.infoItem}>
-        <Text style={styles.infoTitle}>{title}</Text>
-        <Text>{value}</Text>
-    </View>
-);
-
-const EventVenue = ({ venueName, mapImage }) => (
+const EventVenue = ({ venueName, mapImage, venueAddress, venueCity, venuePostCode, venueRegion }) => (
     <View style={styles.venue}>
-        <Text style={styles.title}>Venue</Text>
-        <Text>{venueName}</Text>
-        <Image style={styles.mapImage} source={mapImage} resizeMode='contain' />
+        <Text style={styles.venueTitle}>Venue</Text>
+        <View style={styles.venueInfo}>
+            <View style={styles.venueText}>
+                <Text>{venueName}</Text>
+                <Text>{venueAddress}</Text>
+                <Text>{venueCity}</Text>
+                <Text>{venuePostCode}</Text>
+                <Text>{venueRegion}</Text>
+            </View>
+            <Image style={styles.mapImage} source={mapImage} resizeMode='cover' />
+        </View>
     </View>
 );
 
 const styles = StyleSheet.create({
-    titleContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
     container: {
         flex: 1,
         padding: 16,
@@ -122,8 +140,24 @@ const styles = StyleSheet.create({
     venue: {
         marginTop: 10,
     },
+    venueTitle: {
+        fontWeight: "bold",
+        fontSize: 18,
+        marginBottom: 8,
+    },
+    venueInfo: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    venueText: {
+        flex: 1,
+        marginRight: 8,
+    },
     mapImage: {
-        width: "100%",
-        aspectRatio: 1,
+        width: 150,
+        height: 100,
+        right: 50,
+        borderRadius: 30,
+        marginLeft: 20, // Add some margin to the left to adjust positioning
     },
 });

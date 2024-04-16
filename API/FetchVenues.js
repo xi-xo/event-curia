@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { REACT_APP_ORGANIZATION_ID, REACT_APP_API_TOKEN } from '@env';
 
-export default function FetchEventsVenue({ personalOAuthToken }) {
+export default function FetchEventsVenue({ REACT_APP_API_TOKEN }) {
     const [venues, setVenues] = useState([]);
 
-    const organizationId = '2066542046663'
 
     useEffect(() => {
         fetch(
-            `https://www.eventbriteapi.com/v3/organizations/${organizationId}/venues/`,
+            `https://www.eventbriteapi.com/v3/organizations/${REACT_APP_ORGANIZATION_ID}/venues/`,
             {
                 headers: {
-                    'Authorization': `Bearer ${personalOAuthToken}`
+                    'Authorization': `Bearer ${REACT_APP_API_TOKEN}`
                 }
             }
         )
@@ -19,6 +19,6 @@ export default function FetchEventsVenue({ personalOAuthToken }) {
                 console.log('Fetched venues: as data', data);
                 setVenues(data.venues);
             })
-    }, [organizationId, personalOAuthToken]);
+    }, [REACT_APP_ORGANIZATION_ID, REACT_APP_API_TOKEN]);
     return venues;
 }

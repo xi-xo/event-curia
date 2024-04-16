@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import {Provider as PaperProvider} from 'react-native-paper'
+import { Provider as PaperProvider } from 'react-native-paper'
 import { createStackNavigator } from '@react-navigation/stack';
 import { createClient } from '@supabase/supabase-js';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
@@ -42,10 +42,13 @@ export default function App() {
               options={{ title: 'Home Page' }}
               showBackButton={true}
             />
-            <Stack.Screen 
-            name="EventDetail" 
-            component={EventDetails}
-            showBackButton={true}
+            <Stack.Screen
+              name="EventDetail"
+              component={EventDetails}
+              options={({ route }) => ({
+                headerTitle: route.params.event.name.text
+              })}
+              showBackButton={true}
             />
           </Stack.Navigator>
         </SessionContextProvider>

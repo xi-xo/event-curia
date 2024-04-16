@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import EventsList from "../components/events/EventsList"
 import { View } from "react-native";
+import { REACT_APP_ORGANIZATION_ID, REACT_APP_API_TOKEN } from '@env';
 
-export default function FetchEvents({ personalOAuthToken, venues }) {
+export default function FetchEvents({ venues }) {
     const [events, setEvents] = useState([]);
 
-    const organizationId = '2066542046663';
 
     useEffect(() => {
 
         fetch(
-            `https://www.eventbriteapi.com/v3/organizations/${organizationId}/events/`,
+            `https://www.eventbriteapi.com/v3/organizations/${REACT_APP_ORGANIZATION_ID}/events/`,
             {
                 headers: {
-                    'Authorization': `Bearer ${personalOAuthToken}`
+                    'Authorization': `Bearer ${REACT_APP_API_TOKEN}`
                 }
             }
         )
@@ -27,7 +27,7 @@ export default function FetchEvents({ personalOAuthToken, venues }) {
             setEvents(eventsWithVenues);
         });
 
-    }, [organizationId, personalOAuthToken, venues]);
+    }, [ venues]);
 
     return (
         <View style={{ flex:1 }}>
