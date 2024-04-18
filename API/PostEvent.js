@@ -1,6 +1,6 @@
+// PostEvent.js
 import React, { useState } from "react";
-import { Button, TextInput, View, ActivityIndicator } from "react-native";
-import { REACT_APP_ORGANIZATION_ID, REACT_APP_API_TOKEN } from '@env';
+import { Pressable, TextInput, View, ActivityIndicator, Text } from "react-native"; // Import Text from react-native
 
 export default function PostEvent() {
     const [eventName, setEventName] = useState('');
@@ -14,6 +14,7 @@ export default function PostEvent() {
             return;
         }
 
+        console.log("Creating event...");
         setLoading(true);
         try {
             const eventDetails = {
@@ -55,6 +56,8 @@ export default function PostEvent() {
 
             const data = await response.json();
 
+            console.log("Response from Eventbrite API:", data);
+
             if (response.ok) {
                 // Event created successfully, clear input fields
                 setEventName('');
@@ -83,11 +86,24 @@ export default function PostEvent() {
                 onChangeText={setEventDescription}
                 value={eventDescription}
             />
-            <Button
-                title="Create Event"
-                onPress={handleCreateEvent}
-            />
+            <Pressable onPress={handleCreateEvent} style={({ pressed }) => [
+                { backgroundColor: pressed ? '#b2b2b2' : '#007bff' },
+                styles.pressable
+            ]}>
+                {({ pressed }) => (
+                    <Text style={{ color: pressed ? 'gray' : 'white' }}>Create Event</Text>
+                )}
+            </Pressable>
             {loading && <ActivityIndicator size="large" color="#0000ff" />}
         </View>
     );
 }
+
+const styles = {
+    pressable: {
+        padding: 10,
+        alignItems: 'center',
+        borderRadius: 5,
+        marginTop: 10
+    }
+};

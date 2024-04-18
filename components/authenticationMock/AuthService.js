@@ -1,5 +1,3 @@
-// AuthService.js
-
 const mockUsers = {
     staff: {
         username: 'staff@staff.com',
@@ -17,7 +15,7 @@ let currentUser = null;
 
 export const signIn = async (email, password) => {
     console.log('Attempting sign-in with email:', email, 'and password:', password);
-    
+
     const user = Object.values(mockUsers).find(u => u.username === email);
     console.log('Found user:', user);
 
