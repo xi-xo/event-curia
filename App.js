@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+// App.js
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createClient } from '@supabase/supabase-js';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { Provider as PaperProvider } from 'react-native-paper';
 import CustomHeader from './components/navigation/CustomHeader';
-import LandingPage from './Pages/LandingPage';
 import HomePage from './Pages/HomePage';
 import EventDetails from './components/events/EventDetails';
 import SignInMock from './components/authenticationMock/SignInMock';
@@ -16,46 +16,56 @@ const Stack = createStackNavigator();
 const supabase = createClient(
   "https://dvuyyfttynkfiehqkeqv.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dXl5ZnR0eW5rZmllaHFrZXF2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTEzOTAyNDQsImV4cCI6MjAyNjk2NjI0NH0.5bBAFK27IL30lGcTdI46LzIv4Do4_kroxFzQhgDOpdQ"
-)
+);
 
 export default function App() {
   const [user, setUser] = useState(getCurrentUser()); // State to hold the authenticated user
+  const [userRole, setUserRole] = useState(null); // State to hold the user role
 
   const handleSignIn = async (email, password) => {
     try {
-      const role = await signIn(email, password);
-      setUser({ username: email, role });
+      console.log("Attempting sign-in with email:", email, "and password:", password);
+      const signedInUser = await signIn(email, password);
+      console.log("Signed in user:", signedInUser);
+      setUser(signedInUser.user); // Update user state with the signed-in user object
+      setUserRole(signedInUser.user.role); // Update userRole state with the role
     } catch (error) {
       console.error('Sign-in error:', error);
     }
   };
 
   const handleSignOut = async () => {
-    try {
-      await signOut();
-      setUser(null);
-    } catch (error) {
-      console.error('Sign-out error:', error);
-    }
+    console.log("Signing out...");
+    await signOut();
+    setUser(null);
+    setUserRole(null);
   };
+
+  useEffect(() => {
+    console.log("User state changed:", user);
+    console.log("User role changed:", userRole);
+  }, [user, userRole]);
+
+  console.log("User role:", userRole);
 
   return (
     <PaperProvider>
-      <NavigationContainer> {/* Ensure NavigationContainer wraps all navigators */}
+      <NavigationContainer>
         <SessionContextProvider supabaseClient={supabase}>
           <Stack.Navigator
             screenOptions={{
               header: ({ navigation, route, options }) => (
                 <CustomHeader
                   title={"EventCuria"}
-                  navigation={navigation}
-                  isDark={true} // You can pass a prop to toggle between dark and light mode
-                  onSignOut={handleSignOut} // Pass handleSignOut function to CustomHeader
+                  isDark={true}
+                  user={user}
+                  userRole={userRole}
+                  onSignOut={handleSignOut}
                 />
               ),
             }}
           >
-            {user ? ( // If user is authenticated, show the HomePage
+            {user ? (
               <>
                 <Stack.Screen
                   name="HomePage"
@@ -63,12 +73,14 @@ export default function App() {
                   options={{ title: 'Home Page' }}
                   showBackButton={true}
                 />
-                {user.role === 'staff' && ( // Show Create Event screen only for staff users
+                {userRole === 'staff' && (
                   <Stack.Screen
-                    name="Create Event"
+                    name="PostEvent"
                     component={PostEvent}
-                    options={{ title: 'Create Event' }}
-                    showBackButton={true}
+                    options={({ route }) => ({
+                      title: 'Create Event',
+                      showBackButton: true,
+                    })}
                   />
                 )}
                 <Stack.Screen
@@ -80,7 +92,7 @@ export default function App() {
                   showBackButton={true}
                 />
               </>
-            ) : ( // If user is not authenticated, show the SignInMock
+            ) : (
               <Stack.Screen
                 name="SignIn"
                 options={{ title: 'Sign In' }}
@@ -89,6 +101,7 @@ export default function App() {
               </Stack.Screen>
             )}
           </Stack.Navigator>
+
         </SessionContextProvider>
       </NavigationContainer>
     </PaperProvider>
