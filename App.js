@@ -11,6 +11,9 @@ import EventDetails from './components/events/EventDetails';
 import SignInMock from './components/authenticationMock/SignInMock';
 import PostEvent from './API/PostEvent';
 import { signIn, signOut, getCurrentUser } from './components/authenticationMock/AuthService';
+import AboutUs from './Pages/AboutUs';
+
+
 
 const Stack = createStackNavigator();
 const supabase = createClient(
@@ -56,7 +59,7 @@ export default function App() {
             screenOptions={{
               header: ({ navigation, route, options }) => (
                 <CustomHeader
-                  title={"EventCuria"}
+                title={options.headerTitle || "EventCuria"}
                   isDark={true}
                   user={user}
                   userRole={userRole}
@@ -70,19 +73,23 @@ export default function App() {
                 <Stack.Screen
                   name="HomePage"
                   component={HomePage}
-                  options={{ title: 'Home Page' }}
+                  options={{ title: 'Events' }}
                   showBackButton={true}
                 />
                 {userRole === 'staff' && (
                   <Stack.Screen
-                    name="PostEvent"
+                    name="CreateEvent"
                     component={PostEvent}
-                    options={({ route }) => ({
-                      title: 'Create Event',
-                      showBackButton: true,
-                    })}
+                    options={{ title: 'Create event' }} 
+                    
                   />
                 )}
+                <Stack.Screen 
+                name="AboutUs" 
+                component={AboutUs} 
+                options={{ title: 'About Us' }} 
+                /> 
+
                 <Stack.Screen
                   name="EventDetail"
                   component={EventDetails}
