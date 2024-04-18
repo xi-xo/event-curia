@@ -50,6 +50,7 @@ export default function CustomHeader({ title, isDark, user, userRole, onSignOut 
                     {/* Add more Menu.Items for additional actions */}
                 </Menu>
             )}
+        
         </Appbar.Header>
     );
 }
