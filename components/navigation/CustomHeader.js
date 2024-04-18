@@ -1,50 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { Appbar, Menu } from 'react-native-paper';
-import { useNavigationState } from '@react-navigation/native';
+import { useNavigation, useNavigationState } from '@react-navigation/native';
 
-export default function CustomHeader({ title, navigation }) {
+export default function CustomHeader({ title, isDark, onSignOut }) {
     const [menuVisible, setMenuVisible] = useState(false);
+    const navigation = useNavigation();
     const navigationState = useNavigationState(state => state);
-    const [showBackButton, setShowBackButton] = useState(false)
-    const [pageTitle, setPageTitle] = useState("")
-
-    const goBack = () => {
-        navigation.goBack();
-    };
 
     const openMenu = () => setMenuVisible(true);
-
     const closeMenu = () => setMenuVisible(false);
 
-    const navigateToHomePage = () => {
-        navigation.navigate('HomePage');
-        closeMenu(); // Close the menu after navigating
+    const handleSignOut = () => {
+        onSignOut(); // Call the sign-out function provided as prop
+        closeMenu(); // Close the menu after signing out
     };
 
     useEffect(() => {
-        if (navigationState.routes.length > 1) {
-            setShowBackButton(true);
-        } else {
-            setShowBackButton(false);
-        }
-        setMenuVisible(false);
-
-        const currentRoute = navigationState.routes[navigationState.index];
-        setPageTitle(currentRoute.name)
+        setMenuVisible(false); // Close the menu when navigation state changes
     }, [navigationState]);
 
+    const handleGoBack = () => {
+        navigation.goBack();
+    };
 
     return (
-        <Appbar.Header statusBarHeight={40} dark={true} style={{ backgroundColor: '#143D52' }}>
-            {showBackButton && <Appbar.BackAction onPress={goBack} />}
-            <Appbar.Content title={pageTitle} titleStyle={{alignSelf: 'center'}} />
+        <Appbar.Header statusBarHeight={40} dark={isDark} style={{ backgroundColor: '#143D52' }}>
+            {navigationState.routes.length > 1 && <Appbar.BackAction onPress={handleGoBack} />}
+            <Appbar.Content title={title} titleStyle={{ alignSelf: 'center' }} />
             <Menu
                 visible={menuVisible}
                 onDismiss={closeMenu}
                 anchor={<Appbar.Action icon="menu" color="white" onPress={openMenu} />}
             >
-                <Menu.Item onPress={navigateToHomePage} title="Home Page" />
-                {/* Add more Menu.Items for additional pages/services */}
+                <Menu.Item onPress={handleSignOut} title="Sign Out" />
+                {/* Add more Menu.Items for additional actions */}
             </Menu>
         </Appbar.Header>
     );

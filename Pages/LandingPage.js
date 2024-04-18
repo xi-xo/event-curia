@@ -1,28 +1,26 @@
-import React from 'react';
-import { StyleSheet, Image, View, Dimensions, ScrollView, Pressable } from 'react-native';
-import LandingPageImage from '../assets/LandingPageImage.jpg'
-import SearchBar from '../components/navigation/SearchBar';
+import React, { useContext } from 'react';
+import { StyleSheet, Image, View, Dimensions } from 'react-native';
+import LandingPageImage from '../assets/LandingPageImage.jpg';
 import PostEvent from '../API/PostEvent';
+import SignInForm from '../components/authenticationMock/SignInMock';
+import { SessionContext } from '@supabase/auth-helpers-react';
 
 export default function LandingPage() {
+    const { user } = useContext(SessionContext);
 
     return (
         <View>
-
             <Image style={styles.image} source={LandingPageImage} />
             <View style={styles.searchBarContainer}>
-                <SearchBar />
-                <PostEvent />
+                {user ? <PostEvent /> : <SignInForm />}
             </View>
         </View>
-
     );
 }
 
-const { width, height } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
-
     searchBarContainer: {
         position: 'absolute',
         top: '50%',
@@ -35,5 +33,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: width * 1,
         height: height * 1,
-    }
+    },
 });
