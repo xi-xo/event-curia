@@ -1,5 +1,6 @@
+//CreateVenues component
 import React, { useState } from "react";
-import { TextInput, Text, ActivityIndicator, View } from "react-native";
+import { TextInput, Pressable, Text, ActivityIndicator, View } from "react-native";
 import { REACT_APP_ORGANIZATION_ID, REACT_APP_API_TOKEN } from '@env';
 
 export default function CreateVenue({ onSuccess }) {
@@ -86,7 +87,27 @@ export default function CreateVenue({ onSuccess }) {
                 onChangeText={setVenuePostalCode}
                 value={venuePostalCode}
             />
-            <ActivityIndicator animating={loading} size="large" color="#0000ff" />
+            <Pressable onPress={handleCreateVenue} style={({ pressed }) => [
+                { backgroundColor: pressed ? '#b2b2b2' : '#007bff' },
+                styles.pressable
+            ]}>
+                <View>
+
+                    {({ pressed }) => (
+                        <Text style={{ color: pressed ? 'gray' : 'white' }}>Create Venue</Text>
+                    )}
+                </View>
+            </Pressable>
+            {loading && <ActivityIndicator size="large" color="#0000ff" />}
         </>
     );
 }
+
+const styles = {
+    pressable: {
+        padding: 10,
+        alignItems: 'center',
+        borderRadius: 5,
+        marginTop: 10
+    }
+};
