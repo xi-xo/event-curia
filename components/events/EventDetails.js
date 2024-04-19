@@ -7,7 +7,7 @@ export default function EventDetails() {
     const navigation = useNavigation();
     const route = useRoute();
     const { event } = route.params;
-    const { venue } = event
+    const { venue } = event;
 
     const startDatePart = event.start.local.split('T')
     const startTime = startDatePart[1].substring(0, 5);
@@ -24,43 +24,45 @@ export default function EventDetails() {
         }
     }, [event, navigation]);
 
-    // Check if event and venues are present
+    // Check if event and venue are present
     if (!event || !venue) {
-        console.log("Event or venues not found:", event, venue);
+        console.log("Event or venue not found:", event, venue);
         return (
             <View style={styles.errorContainer}>
-                <Text>Error: Event or venues not found</Text>
+                <Text>Error: Event or venue not found</Text>
             </View>
         );
     }
 
+    const imageUrl = event.logo ? event.logo.original.url : 'url_of_your_default_image'; // Add this line
+
     return (
         <View style={styles.container}>
-            <EventHeader eventName={event.name.text} logoUrl={event.logo.original.url} description={event.description.text} />
-            <EventInfo 
-                capacity={event.capacity} 
-                status={event.status} 
-                startDate={startDate} 
-                startTime={startTime} 
-                endDate={endDate} 
-                endTime={endTime} 
+            <EventHeader eventName={event.name.text} imageUrl={imageUrl} description={event.description.text} />
+            <EventInfo
+                capacity={event.capacity}
+                status={event.status}
+                startDate={startDate}
+                startTime={startTime}
+                endDate={endDate}
+                endTime={endTime}
             />
-            <EventVenue 
-            venueName={venue.name} 
-            venueAddress={venue.address.address_1}
-            venueCity={venue.address.city}
-            venuePostCode={venue.address.region}
-            venueRegion={venue.address.postal_code}
-            mapImage={mapImage} 
+            <EventVenue
+                venueName={venue.name}
+                venueAddress={venue.address.address_1}
+                venueCity={venue.address.city}
+                venuePostCode={venue.address.region}
+                venueRegion={venue.address.postal_code}
+                mapImage={mapImage}
             />
         </View>
     );
 }
 
-const EventHeader = ({ eventName, logoUrl, description }) => (
+const EventHeader = ({ eventName, imageUrl, description }) => (
     <View style={styles.header}>
         <Text style={styles.title}>{eventName}</Text>
-        <Image style={styles.logo} source={{ uri: logoUrl }} resizeMode="cover" />
+        {imageUrl && <Image style={styles.logo} source={{ uri: imageUrl }} resizeMode="cover" />} {/* Add this line */}
         <Text style={styles.description}>{description}</Text>
     </View>
 );
@@ -84,21 +86,36 @@ const EventInfo = ({ capacity, startDate, startTime, endDate, endTime }) => (
     </View>
 );
 
-const EventVenue = ({ venueName, mapImage, venueAddress, venueCity, venuePostCode, venueRegion }) => (
-    <View style={styles.venue}>
-        <Text style={styles.venueTitle}>Venue</Text>
-        <View style={styles.venueInfo}>
-            <View style={styles.venueText}>
-                <Text>{venueName}</Text>
-                <Text>{venueAddress}</Text>
-                <Text>{venueCity}</Text>
-                <Text>{venuePostCode}</Text>
-                <Text>{venueRegion}</Text>
+const EventVenue = ({ venueName, mapImage, venueAddress, venueCity, venuePostCode, venueRegion }) => {
+    // Check if any of the venue details are missing
+    if (!venueName || !venueAddress || !venueCity || !venuePostCode || !venueRegion) {
+        return (
+            <View style={styles.venue}>
+                <Text style={styles.venueTitle}>Venue</Text>
+                <Text style={styles.errorText}>Venue details not available</Text>
             </View>
-            <Image style={styles.mapImage} source={mapImage} resizeMode='cover' />
+        );
+    }
+
+    return (
+        <View style={styles.venue}>
+            <Text style={styles.venueTitle}>Venue</Text>
+            <View style={styles.venueInfo}>
+                <View style={styles.venueText}>
+                    {venueName && <Text>{venueName}</Text>}
+                    {venueAddress && <Text>{venueAddress}</Text>}
+                    {venueCity && <Text>{venueCity}</Text>}
+                    {venuePostCode && <Text>{venuePostCode}</Text>}
+                    {venueRegion && <Text>{venueRegion}</Text>}
+                </View>
+                {mapImage && typeof mapImage === 'string' && (
+                    <Image style={styles.mapImage} source={{ uri: mapImage }} resizeMode='cover' />
+                )}
+            </View>
         </View>
-    </View>
-);
+    );
+};
+
 
 const styles = StyleSheet.create({
     container: {

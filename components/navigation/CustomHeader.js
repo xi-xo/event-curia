@@ -47,7 +47,6 @@ export default function CustomHeader({ isDark, user, userRole, onSignOut }) {
     }
     // Add more conditions for other screens as needed
 
-    console.log("User role:", userRole);
 
     return (
         <Appbar.Header statusBarHeight={40} dark={isDark} style={{ backgroundColor: '#143D52' }}>
