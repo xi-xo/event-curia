@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { TextInput, View, ActivityIndicator, Text, TouchableOpacity } from "react-native";
+import { TextInput, View, ActivityIndicator, Text, Pressable } from "react-native";
 import { REACT_APP_ORGANIZATION_ID, REACT_APP_API_TOKEN } from '@env';
 import CreateVenue from "../API/CreateVenue";
 import DatePicker from "react-datepicker";
@@ -143,9 +143,8 @@ export default function PostEvent() {
             <DatePicker selected={endDate} onChange={date => setEndDate(date)} showTimeSelect timeFormat="HH:mm" dateFormat="yyyy-MM-dd HH:mm" />
 
             <CreateVenue onSuccess={handleCreateVenueSuccess} />
-            <TouchableOpacity disabled={loading} onPress={handlePublishEvent} style={styles.publishButton}>
-                <Text style={{ color: 'white' }}>Publish Event</Text>
-            </TouchableOpacity>
+            <Pressable disabled={loading} onPress={handlePublishEvent} >
+            </Pressable>
             {loading && <ActivityIndicator size="large" color="#0000ff" />}
         </View>
     );
@@ -164,11 +163,5 @@ const styles = {
         padding: 10,
         marginBottom: 10,
     },
-    publishButton: {
-        backgroundColor: '#007bff',
-        padding: 10,
-        alignItems: 'center',
-        borderRadius: 5,
-        marginTop: 10
-    },
+    
 };
