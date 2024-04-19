@@ -49,7 +49,6 @@ export default function App() {
     console.log("User role changed:", userRole);
   }, [user, userRole]);
 
-  console.log("User role:", userRole);
 
   return (
     <PaperProvider>
