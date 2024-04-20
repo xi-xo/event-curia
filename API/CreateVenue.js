@@ -89,7 +89,7 @@ export default function CreateVenue({ onSuccess }) {
             />
             <Pressable style={styles.pressable} onPress={handleCreateVenue}>
                 <View>
-                    <Text>Publish Event</Text>
+                    <Text>Create Venues</Text>
                 </View>
             </Pressable>
             {loading && <ActivityIndicator size="large" color="#0000ff" />}
@@ -99,7 +99,7 @@ export default function CreateVenue({ onSuccess }) {
 
 const styles = {
     pressable: {
-        
+
         backgroundColor: '#007bff',
         padding: 10,
         alignItems: 'center',

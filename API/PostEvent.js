@@ -29,20 +29,14 @@ export default function PostEvent() {
         return formattedDateTime;
     };
 
-    useEffect(() => {
-        if (createdVenueId) {
-            handlePublishEvent();
-        }
-    }, [createdVenueId]); // Run this effect whenever createdVenueId changes
-
-    const handlePublishEvent = async () => {
+    const handleCreateEvent = async () => {
         // Input validation
         if (!eventName.trim() || !eventDescription.trim() || !eventCapacity.trim()) {
             alert('Please enter event name, description, and capacity.');
             return;
         }
-
         console.log("Creating event...");
+
         setLoading(true);
         try {
             const eventDetails = {
@@ -110,6 +104,7 @@ export default function PostEvent() {
 
     return (
         <View>
+                <CreateVenue onSuccess={setCreatedVenueId} />
             <View>
                 <Text style={styles.title}>Enter event details</Text>
                 <TextInput
@@ -142,8 +137,8 @@ export default function PostEvent() {
             </View>
             <DatePicker selected={endDate} onChange={date => setEndDate(date)} showTimeSelect timeFormat="HH:mm" dateFormat="yyyy-MM-dd HH:mm" />
 
-            <CreateVenue onSuccess={handleCreateVenueSuccess} />
-            <Pressable disabled={loading} onPress={handlePublishEvent} >
+            <Pressable disabled={loading} onPress={handleCreateEvent} >
+                <Text> Create Event </Text>
             </Pressable>
             {loading && <ActivityIndicator size="large" color="#0000ff" />}
         </View>
