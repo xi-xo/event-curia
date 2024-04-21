@@ -87,9 +87,15 @@ export default function CreateVenue({ onSuccess }) {
                 onChangeText={setVenuePostalCode}
                 value={venuePostalCode}
             />
-            <Pressable style={styles.pressable} onPress={handleCreateVenue}>
+            <Pressable onPress={handleCreateVenue} style={({ pressed }) => [
+                { backgroundColor: pressed ? '#b2b2b2' : '#007bff' },
+                styles.pressable
+            ]}>
                 <View>
-                    <Text>Create Venues</Text>
+
+                    {({ pressed }) => (
+                        <Text style={{ color: pressed ? 'gray' : 'white' }}>Create Venue</Text>
+                    )}
                 </View>
             </Pressable>
             {loading && <ActivityIndicator size="large" color="#0000ff" />}
@@ -99,8 +105,6 @@ export default function CreateVenue({ onSuccess }) {
 
 const styles = {
     pressable: {
-
-        backgroundColor: '#007bff',
         padding: 10,
         alignItems: 'center',
         borderRadius: 5,

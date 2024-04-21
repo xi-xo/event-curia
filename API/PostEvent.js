@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { TextInput, View, ActivityIndicator, Text, Pressable } from "react-native";
+import React, { useState } from "react";
+import { Pressable, TextInput, View, ActivityIndicator, Text } from "react-native";
 import { REACT_APP_ORGANIZATION_ID, REACT_APP_API_TOKEN } from '@env';
 import CreateVenue from "../API/CreateVenue";
 import DatePicker from "react-datepicker";
@@ -12,7 +12,6 @@ if (!REACT_APP_ORGANIZATION_ID || !REACT_APP_API_TOKEN) {
 export default function PostEvent() {
     const [eventName, setEventName] = useState('');
     const [eventDescription, setEventDescription] = useState('');
-    const [eventCapacity, setEventCapacity] = useState('');
     const [loading, setLoading] = useState(false);
     const [createdVenueId, setCreatedVenueId] = useState(null);
     const [startDate, setStartDate] = useState(new Date());
@@ -31,12 +30,18 @@ export default function PostEvent() {
 
     const handleCreateEvent = async () => {
         // Input validation
-        if (!eventName.trim() || !eventDescription.trim() || !eventCapacity.trim()) {
-            alert('Please enter event name, description, and capacity.');
+        if (!eventName.trim() || !eventDescription.trim()) {
+            alert('Please enter event name and description.');
             return;
         }
-        console.log("Creating event...");
 
+        // Check if a venue has been created
+        if (!createdVenueId) {
+            alert('Please create a venue.');
+            return;
+        }
+
+        console.log("Creating event...");
         setLoading(true);
         try {
             const eventDetails = {
@@ -55,7 +60,7 @@ export default function PostEvent() {
                         "timezone": "Europe/London",
                         "utc": formatDateTime(endDate)
                     },
-                    "capacity": eventCapacity,
+                    "capacity": 5,
                     "currency": "GBP",
                     "listed": false,
                     "shareable": false,
@@ -83,7 +88,6 @@ export default function PostEvent() {
                 // Event created successfully, clear input fields
                 setEventName('');
                 setEventDescription('');
-                setEventCapacity('');
                 alert('Event created successfully');
             } else {
                 throw new Error(`Error creating event: ${data.error_description}`);
@@ -98,47 +102,32 @@ export default function PostEvent() {
         }
     };
 
-    const handleCreateVenueSuccess = (venueId) => {
-        setCreatedVenueId(venueId);
-    };
-
     return (
         <View>
-                <CreateVenue onSuccess={setCreatedVenueId} />
-            <View>
-                <Text style={styles.title}>Enter event details</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Event Name"
-                    onChangeText={setEventName}
-                    value={eventName}
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Event Description"
-                    onChangeText={setEventDescription}
-                    value={eventDescription}
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Event Capacity"
-                    onChangeText={setEventCapacity}
-                    value={eventCapacity}
-                    keyboardType="numeric"
-                />
-            </View>
-            
-            <View>
-                <Text>Select Start Date</Text>
-            </View>
+            <TextInput
+                placeholder="Event Name"
+                onChangeText={setEventName}
+                value={eventName}
+            />
+            <TextInput
+                placeholder="Event Description"
+                onChangeText={setEventDescription}
+                value={eventDescription}
+            />
+            <Text>Select Start Date</Text>
             <DatePicker selected={startDate} onChange={date => setStartDate(date)} showTimeSelect timeFormat="HH:mm" dateFormat="yyyy-MM-dd HH:mm" />
-            <View>
-                <Text>Select End Date</Text>
-            </View>
+
+            <Text>Select End Date</Text>
             <DatePicker selected={endDate} onChange={date => setEndDate(date)} showTimeSelect timeFormat="HH:mm" dateFormat="yyyy-MM-dd HH:mm" />
 
-            <Pressable disabled={loading} onPress={handleCreateEvent} >
-                <Text> Create Event </Text>
+            <CreateVenue onSuccess={setCreatedVenueId} /> 
+            <Pressable disabled={loading} onPress={handleCreateEvent} style={({ pressed }) => [
+                { backgroundColor: pressed ? '#b2b2b2' : '#007bff' },
+                styles.pressable
+            ]}>
+                {({ pressed }) => (
+                    <Text style={{ color: pressed ? 'gray' : 'white' }}>Create Event</Text>
+                )}
             </Pressable>
             {loading && <ActivityIndicator size="large" color="#0000ff" />}
         </View>
@@ -146,17 +135,10 @@ export default function PostEvent() {
 }
 
 const styles = {
-    title: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginBottom: 10,
-    },
-    input: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 5,
+    pressable: {
         padding: 10,
-        marginBottom: 10,
-    },
-    
+        alignItems: 'center',
+        borderRadius: 5,
+        marginTop: 10
+    }
 };

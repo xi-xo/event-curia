@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import mapImage from "../../assets/3d-pin-map.jpg"
 
@@ -24,16 +24,17 @@ export default function EventDetails() {
         }
     }, [event, navigation]);
 
-    // Check if event and venue are present
-    if (!event || !venue) {
-        console.log("Event or venue not found:", event, venue);
+    // Conditional rendering to handle asynchronous data loading
+    if (!venue) {
+        // Venue data is not available yet, render a loading indicator or placeholder
         return (
-            <View style={styles.errorContainer}>
-                <Text>Error: Event or venue not found</Text>
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#0000ff" />
             </View>
         );
     }
 
+    // Proceed with rendering EventDetails component using the venue data
     const imageUrl = event.logo ? event.logo.original.url : 'url_of_your_default_image'; // Add this line
 
     return (
@@ -86,36 +87,24 @@ const EventInfo = ({ capacity, startDate, startTime, endDate, endTime }) => (
     </View>
 );
 
-const EventVenue = ({ venueName, mapImage, venueAddress, venueCity, venuePostCode, venueRegion }) => {
+const EventVenue = ({ venueName, mapImage, venueAddress, venueCity, venuePostCode, venueRegion }) => (
     // Check if any of the venue details are missing
-    if (!venueName || !venueAddress || !venueCity || !venuePostCode || !venueRegion) {
-        return (
-            <View style={styles.venue}>
-                <Text style={styles.venueTitle}>Venue</Text>
-                <Text style={styles.errorText}>Venue details not available</Text>
+    <View style={styles.venue}>
+        <Text style={styles.venueTitle}>Venue</Text>
+        <View style={styles.venueInfo}>
+            <View style={styles.venueText}>
+                {venueName && <Text>{venueName}</Text>}
+                {venueAddress && <Text>{venueAddress}</Text>}
+                {venueCity && <Text>{venueCity}</Text>}
+                {venuePostCode && <Text>{venuePostCode}</Text>}
+                {venueRegion && <Text>{venueRegion}</Text>}
             </View>
-        );
-    }
-
-    return (
-        <View style={styles.venue}>
-            <Text style={styles.venueTitle}>Venue</Text>
-            <View style={styles.venueInfo}>
-                <View style={styles.venueText}>
-                    {venueName && <Text>{venueName}</Text>}
-                    {venueAddress && <Text>{venueAddress}</Text>}
-                    {venueCity && <Text>{venueCity}</Text>}
-                    {venuePostCode && <Text>{venuePostCode}</Text>}
-                    {venueRegion && <Text>{venueRegion}</Text>}
-                </View>
-                {mapImage && typeof mapImage === 'string' && (
-                    <Image style={styles.mapImage} source={{ uri: mapImage }} resizeMode='cover' />
-                )}
-            </View>
+            {mapImage && typeof mapImage === 'string' && (
+                <Image style={styles.mapImage} source={{ uri: mapImage }} resizeMode='cover' />
+            )}
         </View>
-    );
-};
-
+    </View>
+);
 
 const styles = StyleSheet.create({
     container: {
@@ -176,5 +165,10 @@ const styles = StyleSheet.create({
         right: 50,
         borderRadius: 30,
         marginLeft: 20, // Add some margin to the left to adjust positioning
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
