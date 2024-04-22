@@ -56,9 +56,9 @@ export default function App() {
         <SessionContextProvider supabaseClient={supabase}>
           <Stack.Navigator
             screenOptions={{
-              header: ({ navigation, route, options }) => (
+              header: ({ options }) => (
                 <CustomHeader
-                title={options.headerTitle || "EventCuria"}
+                  title={options.headerTitle || "EventCuria"}
                   isDark={true}
                   user={user}
                   userRole={userRole}
@@ -79,22 +79,23 @@ export default function App() {
                   <Stack.Screen
                     name="CreateEvent"
                     component={PostEvent}
-                    options={{ title: 'Create event' }} 
-                    
+                    options={{ title: 'Create event' }}
+
                   />
                 )}
-                <Stack.Screen 
-                name="AboutUs" 
-                component={AboutUs} 
-                options={{ title: 'About Us' }} 
-                /> 
+                <Stack.Screen
+                  name="AboutUs"
+                  component={AboutUs}
+                  options={{ title: 'About Us' }}
+                />
 
                 <Stack.Screen
                   name="EventDetail"
                   component={EventDetails}
                   options={({ route }) => ({
-                    headerTitle: route.params.event.name.text
+                    headerTitle: route.params.event.name.text,
                   })}
+                  initialParams={{ userRole: userRole }}
                   showBackButton={true}
                 />
               </>

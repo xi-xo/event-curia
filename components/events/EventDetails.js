@@ -1,13 +1,17 @@
 import React, { useEffect } from 'react';
-import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, Image, StyleSheet, ActivityIndicator, Pressable } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import mapImage from "../../assets/3d-pin-map.jpg"
+import { getCurrentUser } from '../authenticationMock/AuthService';
 
-export default function EventDetails() {
+export default function EventDetails({route}) {
     const navigation = useNavigation();
-    const route = useRoute();
-    const { event } = route.params;
+    const { event, userRole } = route.params;
     const { venue } = event;
+
+    console.log(userRole);
+
+    const eventId = event.id
 
     const startDatePart = event.start.local.split('T')
     const startTime = startDatePart[1].substring(0, 5);
@@ -34,6 +38,26 @@ export default function EventDetails() {
         );
     }
 
+    const handleSignUp = async (eventId) => {
+        try{
+            console.log("pressable working", eventId);
+
+            const currentUser = getCurrentUser();
+            if (!currentUser) {
+                console.log("User is not Authenticated. Redirect to sign-in page... ");
+                navigation.navigate('SignIn')
+                return;
+            }
+
+            console.log("User is authenticated. Proceeding with sign-up...");
+
+            console.log("Sign-up successful!");
+        } catch (error) {
+            console.error("Error occured during sign-up:", error);
+        }
+
+    }
+
     // Proceed with rendering EventDetails component using the venue data
     const imageUrl = event.logo ? event.logo.original.url : 'url_of_your_default_image'; // Add this line
 
@@ -56,6 +80,9 @@ export default function EventDetails() {
                 venueRegion={venue.address.postal_code}
                 mapImage={mapImage}
             />
+        <Pressable onPress={() => handleSignUp(eventId)}>
+            {userRole !== 'staff' && <Text>Sign Up</Text>}
+        </Pressable>
         </View>
     );
 }
@@ -63,7 +90,7 @@ export default function EventDetails() {
 const EventHeader = ({ eventName, imageUrl, description }) => (
     <View style={styles.header}>
         <Text style={styles.title}>{eventName}</Text>
-        {imageUrl && <Image style={styles.logo} source={{ uri: imageUrl }} resizeMode="cover" />} {/* Add this line */}
+        {imageUrl && <Image style={styles.logo} source={{ uri: imageUrl }} resizeMode="cover" />}
         <Text style={styles.description}>{description}</Text>
     </View>
 );
@@ -88,7 +115,6 @@ const EventInfo = ({ capacity, startDate, startTime, endDate, endTime }) => (
 );
 
 const EventVenue = ({ venueName, mapImage, venueAddress, venueCity, venuePostCode, venueRegion }) => (
-    // Check if any of the venue details are missing
     <View style={styles.venue}>
         <Text style={styles.venueTitle}>Venue</Text>
         <View style={styles.venueInfo}>
@@ -164,7 +190,7 @@ const styles = StyleSheet.create({
         height: 100,
         right: 50,
         borderRadius: 30,
-        marginLeft: 20, // Add some margin to the left to adjust positioning
+        marginLeft: 20, 
     },
     loadingContainer: {
         flex: 1,

@@ -139,8 +139,8 @@ export default function PostEvent() {
                 )}
             </Pressable>
             {loading && <ActivityIndicator size="large" color="#0000ff" />}
-            <CreateTicketClass eventId={createdEventId} onSuccess={handleTicketClassSuccess}/> {/* Pass the created event ID to CreateTicketClass */}
-            <PublishEvent eventId={createdEventId} /> {/* Pass the created event ID to PublishEvent */}
+            <CreateTicketClass eventId={createdEventId} onSuccess={handleTicketClassSuccess}/> 
+            <PublishEvent eventId={createdEventId} /> 
         </View>
     );
 }
