@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { Pressable, TextInput, View, ActivityIndicator, Text } from "react-native";
 import { REACT_APP_ORGANIZATION_ID, REACT_APP_API_TOKEN } from '@env';
 import CreateVenue from "../API/CreateVenue";
+import CreateTicketClass from "./CreateTicketClass";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import PublishEvent from "./PublishEvent";
 
 if (!REACT_APP_ORGANIZATION_ID || !REACT_APP_API_TOKEN) {
     console.error('Please set your environment variables.');
@@ -16,6 +18,7 @@ export default function PostEvent() {
     const [createdVenueId, setCreatedVenueId] = useState(null);
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
+    const [createdEventId, setCreatedEventId] = useState(null); // State to hold the created event ID
 
     const formatDateTime = (date) => {
         const formattedDate = new Date(date);
@@ -85,7 +88,9 @@ export default function PostEvent() {
             console.log("Response from Eventbrite API:", data);
 
             if (response.ok) {
-                // Event created successfully, clear input fields
+                // Event created successfully, set the created event ID
+                setCreatedEventId(data.id);
+                // Clear input fields
                 setEventName('');
                 setEventDescription('');
                 alert('Event created successfully');
@@ -100,6 +105,10 @@ export default function PostEvent() {
         } finally {
             setLoading(false);
         }
+    };
+    const handleTicketClassSuccess = (ticketClassId) => {
+        console.log('Ticket class created successfully:', ticketClassId);
+        // Handle any logic after the ticket class is created
     };
 
     return (
@@ -120,7 +129,7 @@ export default function PostEvent() {
             <Text>Select End Date</Text>
             <DatePicker selected={endDate} onChange={date => setEndDate(date)} showTimeSelect timeFormat="HH:mm" dateFormat="yyyy-MM-dd HH:mm" />
 
-            <CreateVenue onSuccess={setCreatedVenueId} /> 
+            <CreateVenue onSuccess={setCreatedVenueId} />
             <Pressable disabled={loading} onPress={handleCreateEvent} style={({ pressed }) => [
                 { backgroundColor: pressed ? '#b2b2b2' : '#007bff' },
                 styles.pressable
@@ -130,6 +139,8 @@ export default function PostEvent() {
                 )}
             </Pressable>
             {loading && <ActivityIndicator size="large" color="#0000ff" />}
+            <CreateTicketClass eventId={createdEventId} onSuccess={handleTicketClassSuccess}/> {/* Pass the created event ID to CreateTicketClass */}
+            <PublishEvent eventId={createdEventId} /> {/* Pass the created event ID to PublishEvent */}
         </View>
     );
 }

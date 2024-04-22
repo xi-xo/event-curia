@@ -91,12 +91,9 @@ export default function CreateVenue({ onSuccess }) {
                 { backgroundColor: pressed ? '#b2b2b2' : '#007bff' },
                 styles.pressable
             ]}>
-                <View>
-
-                    {({ pressed }) => (
-                        <Text style={{ color: pressed ? 'gray' : 'white' }}>Create Venue</Text>
-                    )}
-                </View>
+                {({ pressed }) => (
+                    <Text style={{ color: pressed ? 'gray' : 'white' }}>Create Venue</Text>
+                )}
             </Pressable>
             {loading && <ActivityIndicator size="large" color="#0000ff" />}
         </>
