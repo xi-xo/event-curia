@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     },
     status: {
         fontWeight: 'bold',
-        color: 'green', // Default color, will be overridden based on status
+        color: 'green', 
     },
     completed: {
         color: 'red',
@@ -67,8 +67,8 @@ const styles = StyleSheet.create({
         color: "#666",
     },
     image: {
-        width: "100%", // Adjust width as needed
-        height: 200, // Adjust height as needed
+        width: "100%", 
+        height: 200, 
         borderRadius: 8,
         marginBottom: 8,
     },

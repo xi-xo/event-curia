@@ -28,9 +28,7 @@ export default function EventDetails({route}) {
         }
     }, [event, navigation]);
 
-    // Conditional rendering to handle asynchronous data loading
     if (!venue) {
-        // Venue data is not available yet, render a loading indicator or placeholder
         return (
             <View style={styles.loadingContainer}>
                 <ActivityIndicator size="large" color="#0000ff" />
@@ -58,8 +56,7 @@ export default function EventDetails({route}) {
 
     }
 
-    // Proceed with rendering EventDetails component using the venue data
-    const imageUrl = event.logo ? event.logo.original.url : 'url_of_your_default_image'; // Add this line
+    const imageUrl = event.logo ? event.logo.original.url : 'url_of_your_default_image';
 
     return (
         <View style={styles.container}>

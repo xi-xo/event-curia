@@ -4,7 +4,6 @@ import EventsList from "../events/EventsList";
 
 
 export default function VenuesList({ venues }) {
-    // console.log("I am in VenuesList", venues);
     
 
     return (

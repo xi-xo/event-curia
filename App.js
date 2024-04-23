@@ -22,16 +22,15 @@ const supabase = createClient(
 );
 
 export default function App() {
-  const [user, setUser] = useState(getCurrentUser()); // State to hold the authenticated user
-  const [userRole, setUserRole] = useState(null); // State to hold the user role
-
+  const [user, setUser] = useState(getCurrentUser()); 
+  const [userRole, setUserRole] = useState(null); 
   const handleSignIn = async (email, password) => {
     try {
       console.log("Attempting sign-in with email:", email, "and password:", password);
       const signedInUser = await signIn(email, password);
       console.log("Signed in user:", signedInUser);
-      setUser(signedInUser.user); // Update user state with the signed-in user object
-      setUserRole(signedInUser.user.role); // Update userRole state with the role
+      setUser(signedInUser.user); 
+      setUserRole(signedInUser.user.role); 
     } catch (error) {
       console.error('Sign-in error:', error);
     }

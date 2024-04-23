@@ -10,8 +10,8 @@ export default function CreateCalendarEvent() {
     const [eventDescription, setEventDescription] = useState("");
 
 
-    const session = useSession(); //token, when session exists we have a user
-    const supabase = useSupabaseClient(); // talk to superbase
+    const session = useSession(); 
+    const supabase = useSupabaseClient(); 
     const { isLoading } = useSessionContext()
 
     if (isLoading) {
@@ -41,18 +41,18 @@ export default function CreateCalendarEvent() {
             'summary': eventName,
             'description': eventDescription,
             'start': {
-                'dateTime': start.toISOString(), //date.toISOString
+                'dateTime': start.toISOString(), 
                 'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
             },
             'end': {
-                'dateTime': end.toISOString(), //date.toISOString
+                'dateTime': end.toISOString(), 
                 'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
             },
         }
         await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events", {
             method: "POST",
             headers: {
-                'Authorization': 'Bearer ' + session.provider_token // Access token to google
+                'Authorization': 'Bearer ' + session.provider_token 
             },
             body: JSON.stringify(event)
         }).then((data) => {
@@ -125,11 +125,11 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         marginBottom: 10,
         paddingHorizontal: 10,
-        width: "100%", // Ensure TextInput fills the container
+        width: "100%", 
     },
     dateTimePicker: {
         marginBottom: 10,
-        maxWidth: "100%", // Ensure DateTimePicker fills the container
+        maxWidth: "100%",
         width: "100%",
     },
     buttonContainer: {
