@@ -12,6 +12,7 @@ import SignInMock from './components/authenticationMock/SignInMock';
 import PostEvent from './API/PostEvent';
 import { signIn, signOut, getCurrentUser } from './components/authenticationMock/AuthService';
 import AboutUs from './Pages/AboutUs';
+import { mockUsers } from './utils/mockUsers';
 
 
 
@@ -24,6 +25,7 @@ const supabase = createClient(
 export default function App() {
   const [user, setUser] = useState(getCurrentUser()); 
   const [userRole, setUserRole] = useState(null); 
+  console.log("I ma a userRoel from App.js:", userRole);
   const handleSignIn = async (email, password) => {
     try {
       console.log("Attempting sign-in with email:", email, "and password:", password);
