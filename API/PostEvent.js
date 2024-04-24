@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Pressable, TextInput, View, ActivityIndicator, Text } from "react-native";
+import { Pressable, TextInput, View, ActivityIndicator, Text, StyleSheet, ScrollView } from "react-native";
 import { REACT_APP_ORGANIZATION_ID, REACT_APP_API_TOKEN } from '@env';
 import CreateVenue from "../API/CreateVenue";
 import CreateTicketClass from "./CreateTicketClass";
@@ -112,44 +112,65 @@ export default function PostEvent() {
     };
 
     return (
-        <View>
-            <TextInput
-                placeholder="Event Name"
-                onChangeText={setEventName}
-                value={eventName}
-            />
-            <TextInput
-                placeholder="Event Description"
-                onChangeText={setEventDescription}
-                value={eventDescription}
-            />
-            <Text>Select Start Date</Text>
-            <DatePicker selected={startDate} onChange={date => setStartDate(date)} showTimeSelect timeFormat="HH:mm" dateFormat="yyyy-MM-dd HH:mm" />
+        <ScrollView>
 
-            <Text>Select End Date</Text>
-            <DatePicker selected={endDate} onChange={date => setEndDate(date)} showTimeSelect timeFormat="HH:mm" dateFormat="yyyy-MM-dd HH:mm" />
+            <View style={styles.container}>
+                <TextInput
+                    placeholder="Event Name"
+                    onChangeText={setEventName}
+                    value={eventName}
+                    style={styles.input}
+                />
+                <TextInput
+                    placeholder="Event Description"
+                    onChangeText={setEventDescription}
+                    value={eventDescription}
+                    style={styles.input}
+                />
+                <Text style={styles.label}>Select Start Date</Text>
+                <DatePicker selected={startDate} onChange={date => setStartDate(date)} showTimeSelect timeFormat="HH:mm" dateFormat="yyyy-MM-dd HH:mm" />
 
-            <CreateVenue onSuccess={setCreatedVenueId} />
-            <Pressable disabled={loading} onPress={handleCreateEvent} style={({ pressed }) => [
-                { backgroundColor: pressed ? '#b2b2b2' : '#007bff' },
-                styles.pressable
-            ]}>
-                {({ pressed }) => (
-                    <Text style={{ color: pressed ? 'gray' : 'white' }}>Create Event</Text>
-                )}
-            </Pressable>
-            {loading && <ActivityIndicator size="large" color="#0000ff" />}
-            <CreateTicketClass eventId={createdEventId} onSuccess={handleTicketClassSuccess}/> 
-            <PublishEvent eventId={createdEventId} /> 
-        </View>
+                <Text style={styles.label}>Select End Date</Text>
+                <DatePicker selected={endDate} onChange={date => setEndDate(date)} showTimeSelect timeFormat="HH:mm" dateFormat="yyyy-MM-dd HH:mm" />
+
+                <Pressable disabled={loading} onPress={handleCreateEvent} style={({ pressed }) => [
+                    { backgroundColor: pressed ? '#b2b2b2' : '#007bff' },
+                    styles.pressable
+                ]}>
+                    {({ pressed }) => (
+                        <Text style={{ color: pressed ? 'gray' : 'white' }}>Create Event</Text>
+                    )}
+                </Pressable>
+                {loading && <ActivityIndicator size="large" color="#0000ff" />}
+                <CreateVenue onSuccess={setCreatedVenueId} />
+                <CreateTicketClass eventId={createdEventId} onSuccess={handleTicketClassSuccess} />
+                <PublishEvent eventId={createdEventId} />
+            </View>
+        </ScrollView>
     );
 }
 
-const styles = {
+const styles = StyleSheet.create({
+    container: {
+        padding: 20,
+    },
+    input: {
+        borderColor: '#ccc',
+        borderWidth: 1,
+        borderRadius: 5,
+        padding: 10,
+        marginBottom: 10,
+    },
+    label: {
+        fontWeight: 'bold',
+        marginBottom: 5,
+    },
     pressable: {
         padding: 10,
         alignItems: 'center',
         borderRadius: 5,
-        marginTop: 10
-    }
-};
+        marginTop: 10,
+        backgroundColor: '#007bff',
+    },
+});
+

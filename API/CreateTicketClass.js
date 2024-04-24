@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Pressable, TextInput, View, ActivityIndicator, Text, Alert } from "react-native";
+import { Pressable, TextInput, View, ActivityIndicator, Text, Alert, StyleSheet } from "react-native";
 import { REACT_APP_ORGANIZATION_ID, REACT_APP_API_TOKEN } from '@env';
 
 if (!REACT_APP_ORGANIZATION_ID || !REACT_APP_API_TOKEN) {
@@ -68,22 +68,25 @@ export default function CreateTicketClass({ eventId, onSuccess }) {
     };
 
     return (
-        <View>
+        <View style={styles.container}>
             <TextInput
                 placeholder="Ticket Name"
                 onChangeText={setTicketName}
                 value={ticketName}
+                style={styles.input}
             />
             <TextInput
                 placeholder="Ticket Description"
                 onChangeText={setTicketDescription}
                 value={ticketDescription}
+                style={styles.input}
             />
             <TextInput
                 placeholder="Quantity"
                 onChangeText={setQuantityTotal}
                 value={quantityTotal}
                 keyboardType="numeric" // Set keyboard type to numeric
+                style={styles.input}
             />
             <Pressable disabled={loading} onPress={handleCreateTicketClass} style={({ pressed }) => [
                 { backgroundColor: pressed ? '#b2b2b2' : '#007bff' },
@@ -98,11 +101,21 @@ export default function CreateTicketClass({ eventId, onSuccess }) {
     );
 }
 
-const styles = {
+const styles = StyleSheet.create({
+    container: {
+        padding: 5,
+    },
+    input: {
+        borderColor: '#ccc',
+        borderWidth: 1,
+        borderRadius: 5,
+        padding: 10,
+        marginBottom: 10,
+    },
     pressable: {
         padding: 10,
         alignItems: 'center',
         borderRadius: 5,
-        marginTop: 10
-    }
-};
+        marginTop: 10,
+    },
+});
