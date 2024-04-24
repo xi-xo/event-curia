@@ -14,6 +14,7 @@ if (!REACT_APP_ORGANIZATION_ID || !REACT_APP_API_TOKEN) {
 export default function PostEvent() {
     const [eventName, setEventName] = useState('');
     const [eventDescription, setEventDescription] = useState('');
+    const [capacity, setCapacity] = useState('');
     const [loading, setLoading] = useState(false);
     const [createdVenueId, setCreatedVenueId] = useState(null);
     const [startDate, setStartDate] = useState(new Date());
@@ -33,8 +34,8 @@ export default function PostEvent() {
 
     const handleCreateEvent = async () => {
         // Input validation
-        if (!eventName.trim() || !eventDescription.trim()) {
-            alert('Please enter event name and description.');
+        if (!eventName.trim() || !eventDescription.trim() || !capacity.trim()) {
+            alert('Please enter event name, description, and capacity.');
             return;
         }
 
@@ -63,7 +64,7 @@ export default function PostEvent() {
                         "timezone": "Europe/London",
                         "utc": formatDateTime(endDate)
                     },
-                    "capacity": 5,
+                    "capacity": parseInt(capacity), // Parse capacity to integer
                     "currency": "GBP",
                     "listed": false,
                     "shareable": false,
@@ -93,6 +94,7 @@ export default function PostEvent() {
                 // Clear input fields
                 setEventName('');
                 setEventDescription('');
+                setCapacity('');
                 alert('Event created successfully');
             } else {
                 throw new Error(`Error creating event: ${data.error_description}`);
@@ -125,6 +127,13 @@ export default function PostEvent() {
                     placeholder="Event Description"
                     onChangeText={setEventDescription}
                     value={eventDescription}
+                    style={styles.input}
+                />
+                <TextInput
+                    placeholder="Capacity"
+                    onChangeText={setCapacity}
+                    value={capacity}
+                    keyboardType="numeric" // Set keyboard type to numeric
                     style={styles.input}
                 />
                 <Text style={styles.label}>Select Start Date</Text>
@@ -173,4 +182,3 @@ const styles = StyleSheet.create({
         backgroundColor: '#007bff',
     },
 });
-
