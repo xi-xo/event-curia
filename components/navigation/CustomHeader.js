@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Appbar, Menu } from 'react-native-paper';
 import { useNavigation, useNavigationState } from '@react-navigation/native';
 
-export default function CustomHeader({ isDark, user, userRole, onSignOut }) {
+export default function CustomHeader({ isDark, user, userRole, onSignOut, isEventSignedUp }) {
     const [menuVisible, setMenuVisible] = useState(false);
     const navigation = useNavigation();
     const navigationState = useNavigationState(state => state);
@@ -28,11 +28,6 @@ export default function CustomHeader({ isDark, user, userRole, onSignOut }) {
     const navigateToPostEvent = () => {
         console.log("Navigating to CreateEvent...");
         navigation.navigate('CreateEvent');
-    };
-
-    const navigateToAddEventToCalendar = () => {
-        console.log("Navigating to AddEventToGoogleCalendar...");
-        navigation.navigate('AddEventToGoogleCalendar');
     };
 
     const handleNavigateToAboutUs = () => {
@@ -65,7 +60,9 @@ export default function CustomHeader({ isDark, user, userRole, onSignOut }) {
                     {userRole === 'staff' && (
                         <Menu.Item onPress={navigateToPostEvent} title="Create event" />
                     )}
-                    <Menu.Item onPress={navigateToAddEventToCalendar} title="Add Event to Calendar" />
+                    {isEventSignedUp && (
+                        <Menu.Item onPress={navigateToAddEventToCalendar} title="Add Event to Calendar" />
+                    )}
                     <Menu.Item onPress={handleNavigateToAboutUs} title="About us" />
                     <Menu.Item onPress={handleSignOut} title="Sign Out" />
                 </Menu>

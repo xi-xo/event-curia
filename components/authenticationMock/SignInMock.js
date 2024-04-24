@@ -1,10 +1,23 @@
-import React, { useState } from 'react';
-import { Alert, StyleSheet, View, Pressable, Text, TextInput } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Alert, StyleSheet, View, Pressable, Text, TextInput, Image, Animated } from 'react-native';
+import ecLogo from '../../assets/EC logo.png';
 
 const SignInMock = ({ onSignIn }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [fadeAnim] = useState(new Animated.Value(0)); // Initial value for opacity: 0
+
+    useEffect(() => {
+        Animated.timing(
+            fadeAnim,
+            {
+                toValue: 1,
+                duration: 1000, // Control the duration of the animation
+                useNativeDriver: true // Add this line for better performance
+            }
+        ).start();
+    }, []);
 
     const handleSignIn = async () => {
         setLoading(true);
@@ -19,6 +32,10 @@ const SignInMock = ({ onSignIn }) => {
 
     return (
         <View style={styles.container}>
+            <Animated.Image
+                source={ecLogo}
+                style={[styles.logo, { opacity: fadeAnim }]}
+            />
             <View style={[styles.verticallySpaced, styles.mt20]}>
                 <TextInput
                     label="Email"
@@ -60,6 +77,7 @@ const styles = StyleSheet.create({
     container: {
         marginTop: 40,
         padding: 12,
+        alignItems: 'center', // Center content horizontally
     },
     verticallySpaced: {
         paddingTop: 4,
@@ -79,6 +97,11 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 16,
         color: '#ffffff',
+    },
+    logo: {
+        width: 200,
+        height: 100,
+        marginBottom: 20,
     },
 });
 

@@ -47,10 +47,14 @@ const PublishEvent = ({ eventId }) => {
 
 const styles = StyleSheet.create({
     pressable: {
+        backgroundColor: '#1E5B7B',
         padding: 10,
-        alignItems: 'center',
+        top: 30,
+        paddingVertical: 10,
+        paddingHorizontal: -10,
         borderRadius: 5,
-        marginTop: 10
+        alignItems: 'center',
+        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
     }
 });
 
