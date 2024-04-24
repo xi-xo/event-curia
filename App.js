@@ -6,13 +6,12 @@ import { createClient } from '@supabase/supabase-js';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { Provider as PaperProvider } from 'react-native-paper';
 import CustomHeader from './components/navigation/CustomHeader';
-import HomePage from './Pages/HomePage';
+import EventWithVenueData from './API/EventWithVenuesData';
 import EventDetails from './components/events/EventDetails';
 import SignInMock from './components/authenticationMock/SignInMock';
 import PostEvent from './API/PostEvent';
 import { signIn, signOut, getCurrentUser } from './components/authenticationMock/AuthService';
 import AboutUs from './Pages/AboutUs';
-import { mockUsers } from './utils/mockUsers';
 
 
 
@@ -71,8 +70,8 @@ export default function App() {
             {user ? (
               <>
                 <Stack.Screen
-                  name="HomePage"
-                  component={HomePage}
+                  name="Events"
+                  component={EventWithVenueData}
                   options={{ title: 'Events' }}
                   showBackButton={true}
                 />

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { View } from "react-native";
-import FetchEvents from "../API/FetchEvents";
+import FetchEvents from "./FetchEvents";
 import { REACT_APP_ORGANIZATION_ID, REACT_APP_API_TOKEN } from '@env';
 
-export default function HomePage() {
+export default function EventWithVenueData() {
     const [venues, setVenues] = useState([]);
 
     useEffect(() => {

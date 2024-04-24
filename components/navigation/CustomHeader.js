@@ -37,7 +37,7 @@ export default function CustomHeader({ isDark, user, userRole, onSignOut }) {
     const currentScreenName = navigationState.routes[navigationState.index].name;
 
     let headerTitle = "Welcome";
-    if (currentScreenName === "HomePage") {
+    if (currentScreenName === "Events") {
         headerTitle = "Events"; 
     } else if (currentScreenName === "AboutUs") {
         headerTitle = "About Us"; 
