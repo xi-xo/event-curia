@@ -13,7 +13,7 @@ const SignInMock = ({ onSignIn }) => {
             fadeAnim,
             {
                 toValue: 1,
-                duration: 2000, // Control the duration of the animation
+                duration: 1000, // Control the duration of the animation
                 useNativeDriver: true // Add this line for better performance
             }
         ).start();

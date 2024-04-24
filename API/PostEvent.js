@@ -170,10 +170,13 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
     pressable: {
+        backgroundColor: '#1E5B7B',
         padding: 10,
-        alignItems: 'center',
+        top: 30,
+        paddingVertical: 10,
+        paddingHorizontal: -10,
         borderRadius: 5,
-        marginTop: 10,
-        backgroundColor: '#007bff',
+        alignItems: 'center',
+        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
     },
 });
