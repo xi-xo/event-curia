@@ -3,15 +3,12 @@ import { Pressable, TextInput, View, ActivityIndicator, Text, StyleSheet, Scroll
 import { REACT_APP_ORGANIZATION_ID, REACT_APP_API_TOKEN } from '@env';
 import CreateVenue from "../API/CreateVenue";
 import CreateTicketClass from "./CreateTicketClass";
+import PublishEvent from "./PublishEvent";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import PublishEvent from "./PublishEvent";
-
-if (!REACT_APP_ORGANIZATION_ID || !REACT_APP_API_TOKEN) {
-    console.error('Please set your environment variables.');
-}
 
 export default function PostEvent() {
+    const [step, setStep] = useState(1);
     const [eventName, setEventName] = useState('');
     const [eventDescription, setEventDescription] = useState('');
     const [capacity, setCapacity] = useState('');
@@ -19,7 +16,7 @@ export default function PostEvent() {
     const [createdVenueId, setCreatedVenueId] = useState(null);
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
-    const [createdEventId, setCreatedEventId] = useState(null); // State to hold the created event ID
+    const [createdEventId, setCreatedEventId] = useState(null);
 
     const formatDateTime = (date) => {
         const formattedDate = new Date(date);
@@ -45,7 +42,6 @@ export default function PostEvent() {
             return;
         }
 
-        console.log("Creating event...");
         setLoading(true);
         try {
             const eventDetails = {
@@ -64,7 +60,7 @@ export default function PostEvent() {
                         "timezone": "Europe/London",
                         "utc": formatDateTime(endDate)
                     },
-                    "capacity": parseInt(capacity), // Parse capacity to integer
+                    "capacity": parseInt(capacity),
                     "currency": "GBP",
                     "listed": false,
                     "shareable": false,
@@ -86,21 +82,13 @@ export default function PostEvent() {
 
             const data = await response.json();
 
-            console.log("Response from Eventbrite API:", data);
-
             if (response.ok) {
-                // Event created successfully, set the created event ID
                 setCreatedEventId(data.id);
-                // Clear input fields
-                setEventName('');
-                setEventDescription('');
-                setCapacity('');
                 alert('Event created successfully');
+                setStep(step + 1); // Move to the next step
             } else {
                 throw new Error(`Error creating event: ${data.error_description}`);
             }
-
-            console.log("Event created successfully:", data);
         } catch (error) {
             console.error('Error creating event:', error.message);
             alert('An error occurred while creating the event. Please try again later.');
@@ -108,52 +96,59 @@ export default function PostEvent() {
             setLoading(false);
         }
     };
+
     const handleTicketClassSuccess = (ticketClassId) => {
         console.log('Ticket class created successfully:', ticketClassId);
-        // Handle any logic after the ticket class is created
+        setStep(step + 1); // Move to the next step
     };
 
     return (
         <ScrollView>
-
             <View style={styles.container}>
-                <TextInput
-                    placeholder="Event Name"
-                    onChangeText={setEventName}
-                    value={eventName}
-                    style={styles.input}
-                />
-                <TextInput
-                    placeholder="Event Description"
-                    onChangeText={setEventDescription}
-                    value={eventDescription}
-                    style={styles.input}
-                />
-                <TextInput
-                    placeholder="Capacity"
-                    onChangeText={setCapacity}
-                    value={capacity}
-                    keyboardType="numeric" // Set keyboard type to numeric
-                    style={styles.input}
-                />
-                <Text style={styles.label}>Select Start Date</Text>
-                <DatePicker selected={startDate} onChange={date => setStartDate(date)} showTimeSelect timeFormat="HH:mm" dateFormat="yyyy-MM-dd HH:mm" />
+                {step === 1 ? (
+                    <CreateVenue onSuccess={id => {
+                        setCreatedVenueId(id);
+                        setStep(step + 1); // Move to the next step
+                    }} />
+                ) : step === 2 ? (
+                    <View>
+                        <TextInput
+                            placeholder="Event Name"
+                            onChangeText={setEventName}
+                            value={eventName}
+                            style={styles.input}
+                        />
+                        <TextInput
+                            placeholder="Event Description"
+                            onChangeText={setEventDescription}
+                            value={eventDescription}
+                            style={styles.input}
+                        />
+                        <TextInput
+                            placeholder="Capacity"
+                            onChangeText={setCapacity}
+                            value={capacity}
+                            keyboardType="numeric"
+                            style={styles.input}
+                        />
+                        <Text style={styles.label}>Select Start Date</Text>
+                        <DatePicker selected={startDate} onChange={date => setStartDate(date)} showTimeSelect timeFormat="HH:mm" dateFormat="yyyy-MM-dd HH:mm" />
 
-                <Text style={styles.label}>Select End Date</Text>
-                <DatePicker selected={endDate} onChange={date => setEndDate(date)} showTimeSelect timeFormat="HH:mm" dateFormat="yyyy-MM-dd HH:mm" />
+                        <Text style={styles.label}>Select End Date</Text>
+                        <DatePicker selected={endDate} onChange={date => setEndDate(date)} showTimeSelect timeFormat="HH:mm" dateFormat="yyyy-MM-dd HH:mm" />
 
-                <Pressable disabled={loading} onPress={handleCreateEvent} style={({ pressed }) => [
-                    { backgroundColor: pressed ? '#b2b2b2' : '#007bff' },
-                    styles.pressable
-                ]}>
-                    {({ pressed }) => (
-                        <Text style={{ color: pressed ? 'gray' : 'white' }}>Create Event</Text>
-                    )}
-                </Pressable>
-                {loading && <ActivityIndicator size="large" color="#0000ff" />}
-                <CreateVenue onSuccess={setCreatedVenueId} />
-                <CreateTicketClass eventId={createdEventId} onSuccess={handleTicketClassSuccess} />
-                <PublishEvent eventId={createdEventId} />
+                        <Pressable disabled={loading} onPress={handleCreateEvent} style={styles.pressable}>
+                            {({ pressed }) => (
+                                <Text style={{ color: pressed ? 'gray' : 'white' }}>Create Event</Text>
+                            )}
+                        </Pressable>
+                        {loading && <ActivityIndicator size="large" color="#0000ff" />}
+                    </View>
+                ) : step === 3 ? (
+                    <CreateTicketClass eventId={createdEventId} onSuccess={handleTicketClassSuccess} />
+                ) : step === 4 ? (
+                    <PublishEvent eventId={createdEventId} />
+                ) : null}
             </View>
         </ScrollView>
     );
