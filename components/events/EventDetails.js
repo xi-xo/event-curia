@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, Text, Image, StyleSheet, ActivityIndicator, Pressable } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import mapImage from "../../assets/3d-pin-map.jpg"
 import { getCurrentUser } from '../authenticationMock/AuthService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -96,8 +96,8 @@ export default function EventDetails({ route }) {
                 venueRegion={venue.address.postal_code}
                 mapImage={mapImage}
             />
-            <Pressable onPress={() => handleSignUp(eventId)}>
-                {userRole !== 'staff' && <Text>Sign Up</Text>}
+            <Pressable style={styles.signUpButton} onPress={() => handleSignUp(eventId)}>
+                {userRole !== 'staff' && <Text style={styles.signUpButtonText}>Sign Up</Text>}
             </Pressable>
         </View>
     );
@@ -107,6 +107,7 @@ const EventHeader = ({ eventName, imageUrl, description }) => (
     <View style={styles.header}>
         <Text style={styles.title}>{eventName}</Text>
         {imageUrl && <Image style={styles.logo} source={{ uri: imageUrl }} resizeMode="cover" />}
+        <Text style={styles.title}>Description</Text>
         <Text style={styles.description}>{description}</Text>
     </View>
 );
@@ -162,23 +163,32 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     logo: {
+        borderColor: "#E0E0E0",
+        borderWidth: 1,
+        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
         width: "100%",
         height: 200,
         borderRadius: 8,
         marginBottom: 8,
     },
     description: {
+        borderColor: "#E0E0E0",
+        borderWidth: 1,
+        borderRadius: 5,
         fontSize: 16,
         marginBottom: 8,
     },
     info: {
+        boxShadow: '0px 2px 4px rgba(0, 0, 5, 0)',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: 16,
     },
     infoItem: {
         flex: 1,
         marginRight: 8,
+        alignItems: 'center',
+        borderWidth: 2,
+        borderColor: '#E0E0E0',
     },
     infoTitle: {
         fontWeight: "bold",
@@ -187,6 +197,7 @@ const styles = StyleSheet.create({
     },
     venue: {
         marginTop: 10,
+        borderRadius: 5,
     },
     venueTitle: {
         fontWeight: "bold",
@@ -194,6 +205,9 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     venueInfo: {
+        boxShadow: '0px 2px 4px rgba(0, 0, 5, 0)',
+        borderWidth: 2,
+        borderColor: '#E0E0E0',
         flexDirection: 'row',
         alignItems: 'center',
     },
@@ -212,5 +226,18 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    signUpButton: {
+        backgroundColor: '#1E5B7B',
+        padding: 10,
+        top: 30,
+        paddingVertical: 10,
+        paddingHorizontal: -10,
+        borderRadius: 5,
+        alignItems: 'center',
+        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
+    },
+    signUpButtonText: {
+        color: '#ffffff'
     },
 });
