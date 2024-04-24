@@ -1,13 +1,20 @@
 import React, { useEffect } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { View, Text, Image, StyleSheet, ActivityIndicator, Pressable } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import mapImage from "../../assets/3d-pin-map.jpg"
+import { getCurrentUser } from '../authenticationMock/AuthService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { mockUsers } from '../../utils/mockUsers'; 
 
-export default function EventDetails() {
+
+export default function EventDetails({ route }) {
     const navigation = useNavigation();
-    const route = useRoute();
-    const { event } = route.params;
+    const { event, userRole } = route.params;
     const { venue } = event;
+
+    console.log("I am a userRole:", userRole);
+
+    const eventId = event.id
 
     const startDatePart = event.start.local.split('T')
     const startTime = startDatePart[1].substring(0, 5);
@@ -24,17 +31,52 @@ export default function EventDetails() {
         }
     }, [event, navigation]);
 
-    // Check if event and venue are present
-    if (!event || !venue) {
-        console.log("Event or venue not found:", event, venue);
+    if (!venue) {
         return (
-            <View style={styles.errorContainer}>
-                <Text>Error: Event or venue not found</Text>
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#0000ff" />
             </View>
         );
     }
 
-    const imageUrl = event.logo ? event.logo.original.url : 'url_of_your_default_image'; // Add this line
+    async function handleSignUp(eventId) {
+        try {
+            console.log("Signing up for event:", eventId);
+    
+            const currentUser = await getCurrentUser();
+            console.log("Current user:", currentUser);
+    
+            if (!currentUser) {
+                console.log("User is not authenticated. Redirecting to sign-in page... ");
+                navigation.navigate('SignIn');
+                return;
+            }
+            
+            const userRole = currentUser.role;
+    
+            if (mockUsers[userRole]) {
+                mockUsers[userRole].events.push(eventId);
+    
+                console.log("User is authenticated. Proceeding with sign-up...");
+    
+                // Save mockUsers to AsyncStorage
+                await AsyncStorage.setItem('mockUsers', JSON.stringify(mockUsers));
+    
+                console.log("Updated mockUsers in AsyncStorage:", mockUsers);
+    
+                // Pass the event details to CreateEventInCalendar component
+                navigation.navigate('CreateEventInCalendar', { event });
+    
+                console.log("Sign-up successful!");
+            } else {
+                console.error("User role not found in mockUsers:", userRole);
+            }
+        } catch (error) {
+            console.error("Error occurred during sign-up:", error);
+        }
+    };
+
+    const imageUrl = event.logo ? event.logo.original.url : 'url_of_your_default_image';
 
     return (
         <View style={styles.container}>
@@ -55,6 +97,10 @@ export default function EventDetails() {
                 venueRegion={venue.address.postal_code}
                 mapImage={mapImage}
             />
+            <Pressable style={styles.signUpButton} onPress={() => handleSignUp(eventId)}>
+                {userRole !== 'staff' && <Text style={styles.signUpButtonText}>Sign Up</Text>}
+            </Pressable>
+            
         </View>
     );
 }
@@ -62,7 +108,8 @@ export default function EventDetails() {
 const EventHeader = ({ eventName, imageUrl, description }) => (
     <View style={styles.header}>
         <Text style={styles.title}>{eventName}</Text>
-        {imageUrl && <Image style={styles.logo} source={{ uri: imageUrl }} resizeMode="cover" />} {/* Add this line */}
+        {imageUrl && <Image style={styles.logo} source={{ uri: imageUrl }} resizeMode="cover" />}
+        <Text style={styles.title}>Description</Text>
         <Text style={styles.description}>{description}</Text>
     </View>
 );
@@ -86,36 +133,23 @@ const EventInfo = ({ capacity, startDate, startTime, endDate, endTime }) => (
     </View>
 );
 
-const EventVenue = ({ venueName, mapImage, venueAddress, venueCity, venuePostCode, venueRegion }) => {
-    // Check if any of the venue details are missing
-    if (!venueName || !venueAddress || !venueCity || !venuePostCode || !venueRegion) {
-        return (
-            <View style={styles.venue}>
-                <Text style={styles.venueTitle}>Venue</Text>
-                <Text style={styles.errorText}>Venue details not available</Text>
+const EventVenue = ({ venueName, mapImage, venueAddress, venueCity, venuePostCode, venueRegion }) => (
+    <View style={styles.venue}>
+        <Text style={styles.venueTitle}>Venue</Text>
+        <View style={styles.venueInfo}>
+            <View style={styles.venueText}>
+                {venueName && <Text>{venueName}</Text>}
+                {venueAddress && <Text>{venueAddress}</Text>}
+                {venueCity && <Text>{venueCity}</Text>}
+                {venuePostCode && <Text>{venuePostCode}</Text>}
+                {venueRegion && <Text>{venueRegion}</Text>}
             </View>
-        );
-    }
-
-    return (
-        <View style={styles.venue}>
-            <Text style={styles.venueTitle}>Venue</Text>
-            <View style={styles.venueInfo}>
-                <View style={styles.venueText}>
-                    {venueName && <Text>{venueName}</Text>}
-                    {venueAddress && <Text>{venueAddress}</Text>}
-                    {venueCity && <Text>{venueCity}</Text>}
-                    {venuePostCode && <Text>{venuePostCode}</Text>}
-                    {venueRegion && <Text>{venueRegion}</Text>}
-                </View>
-                {mapImage && typeof mapImage === 'string' && (
-                    <Image style={styles.mapImage} source={{ uri: mapImage }} resizeMode='cover' />
-                )}
-            </View>
+            {mapImage && typeof mapImage === 'string' && (
+                <Image style={styles.mapImage} source={{ uri: mapImage }} resizeMode='cover' />
+            )}
         </View>
-    );
-};
-
+    </View>
+);
 
 const styles = StyleSheet.create({
     container: {
@@ -131,23 +165,32 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     logo: {
+        borderColor: "#E0E0E0",
+        borderWidth: 1,
+        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
         width: "100%",
         height: 200,
         borderRadius: 8,
         marginBottom: 8,
     },
     description: {
+        borderColor: "#E0E0E0",
+        borderWidth: 1,
+        borderRadius: 5,
         fontSize: 16,
         marginBottom: 8,
     },
     info: {
+        boxShadow: '0px 2px 4px rgba(0, 0, 5, 0)',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: 16,
     },
     infoItem: {
         flex: 1,
         marginRight: 8,
+        alignItems: 'center',
+        borderWidth: 2,
+        borderColor: '#E0E0E0',
     },
     infoTitle: {
         fontWeight: "bold",
@@ -156,6 +199,7 @@ const styles = StyleSheet.create({
     },
     venue: {
         marginTop: 10,
+        borderRadius: 5,
     },
     venueTitle: {
         fontWeight: "bold",
@@ -163,6 +207,9 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     venueInfo: {
+        boxShadow: '0px 2px 4px rgba(0, 0, 5, 0)',
+        borderWidth: 2,
+        borderColor: '#E0E0E0',
         flexDirection: 'row',
         alignItems: 'center',
     },
@@ -175,6 +222,24 @@ const styles = StyleSheet.create({
         height: 100,
         right: 50,
         borderRadius: 30,
-        marginLeft: 20, // Add some margin to the left to adjust positioning
+        marginLeft: 20, 
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    signUpButton: {
+        backgroundColor: '#1E5B7B',
+        padding: 10,
+        top: 30,
+        paddingVertical: 10,
+        paddingHorizontal: -10,
+        borderRadius: 5,
+        alignItems: 'center',
+        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
+    },
+    signUpButtonText: {
+        color: '#ffffff'
     },
 });

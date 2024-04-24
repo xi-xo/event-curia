@@ -1,15 +1,5 @@
-const mockUsers = {
-    staff: {
-        username: 'staff@staff.com',
-        password: 'staff',
-        role: 'staff',
-    },
-    user: {
-        username: 'user@user.com',
-        password: 'user',
-        role: 'user',
-    },
-};
+import { mockUsers } from "../../utils/mockUsers";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 let currentUser = null;
 
@@ -20,6 +10,9 @@ export const signIn = async (email, password) => {
     console.log('Found user:', user);
 
     if (user && user.password === password) {
+        await AsyncStorage.setItem('currentUser', JSON.stringify({ ...user, role: user.role }));
+
+        currentUser = { ...user, role: user.role }; // Update currentUser with role
         // If the user exists and the password matches, return the user object
         console.log('Sign-in successful for user:', user);
         return { user: { id: '123', email: user.username, role: user.role } };
@@ -30,8 +23,18 @@ export const signIn = async (email, password) => {
     }
 };
 
+
 export const signOut = async () => {
+    await AsyncStorage.removeItem('currentUser');
     currentUser = null;
 };
 
-export const getCurrentUser = () => currentUser;
+export const getCurrentUser = async () => {
+    try {
+        const userData = await AsyncStorage.getItem('currentUser');
+        return JSON.parse(userData);
+    } catch (error) {
+        console.error('Error getting current user:', error);
+        return null;
+    }
+};

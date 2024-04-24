@@ -1,6 +1,5 @@
-//CreateVenues component
 import React, { useState } from "react";
-import { TextInput, Pressable, Text, ActivityIndicator, View } from "react-native";
+import { TextInput, Pressable, Text, ActivityIndicator, View, StyleSheet } from "react-native";
 import { REACT_APP_ORGANIZATION_ID, REACT_APP_API_TOKEN } from '@env';
 
 export default function CreateVenue({ onSuccess }) {
@@ -61,53 +60,65 @@ export default function CreateVenue({ onSuccess }) {
     };
 
     return (
-        <>
+        <View style={styles.container}>
             <TextInput
                 placeholder="Venue Name"
                 onChangeText={setVenueName}
                 value={venueName}
+                style={styles.input}
             />
             <TextInput
                 placeholder="Address"
                 onChangeText={setVenueAddress}
                 value={venueAddress}
+                style={styles.input}
             />
             <TextInput
                 placeholder="City"
                 onChangeText={setVenueCity}
                 value={venueCity}
+                style={styles.input}
             />
             <TextInput
                 placeholder="Region"
                 onChangeText={setVenueRegion}
                 value={venueRegion}
+                style={styles.input}
             />
             <TextInput
                 placeholder="Postal Code"
                 onChangeText={setVenuePostalCode}
                 value={venuePostalCode}
+                style={styles.input}
             />
             <Pressable onPress={handleCreateVenue} style={({ pressed }) => [
                 { backgroundColor: pressed ? '#b2b2b2' : '#007bff' },
                 styles.pressable
             ]}>
-                <View>
-
-                    {({ pressed }) => (
-                        <Text style={{ color: pressed ? 'gray' : 'white' }}>Create Venue</Text>
-                    )}
-                </View>
+                {({ pressed }) => (
+                    <Text style={{ color: pressed ? 'gray' : 'white' }}>Create Venue</Text>
+                )}
             </Pressable>
             {loading && <ActivityIndicator size="large" color="#0000ff" />}
-        </>
+        </View>
     );
 }
 
-const styles = {
+const styles = StyleSheet.create({
+    container: {
+        padding: 5,
+    },
+    input: {
+        borderColor: '#ccc',
+        borderWidth: 1,
+        borderRadius: 5,
+        padding: 10,
+        marginBottom: 10,
+    },
     pressable: {
         padding: 10,
         alignItems: 'center',
         borderRadius: 5,
-        marginTop: 10
-    }
-};
+        marginTop: 10,
+    },
+});

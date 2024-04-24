@@ -6,12 +6,14 @@ import { createClient } from '@supabase/supabase-js';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { Provider as PaperProvider } from 'react-native-paper';
 import CustomHeader from './components/navigation/CustomHeader';
-import HomePage from './Pages/HomePage';
+import EventWithVenueData from './API/EventWithVenuesData';
 import EventDetails from './components/events/EventDetails';
 import SignInMock from './components/authenticationMock/SignInMock';
 import PostEvent from './API/PostEvent';
 import { signIn, signOut, getCurrentUser } from './components/authenticationMock/AuthService';
 import AboutUs from './Pages/AboutUs';
+import CreateEventInCalendar from './components/CreateEventInCalendar';
+
 
 
 
@@ -22,16 +24,16 @@ const supabase = createClient(
 );
 
 export default function App() {
-  const [user, setUser] = useState(getCurrentUser()); // State to hold the authenticated user
-  const [userRole, setUserRole] = useState(null); // State to hold the user role
-
+  const [user, setUser] = useState(getCurrentUser()); 
+  const [userRole, setUserRole] = useState(null); 
+  console.log("I ma a userRoel from App.js:", userRole);
   const handleSignIn = async (email, password) => {
     try {
       console.log("Attempting sign-in with email:", email, "and password:", password);
       const signedInUser = await signIn(email, password);
       console.log("Signed in user:", signedInUser);
-      setUser(signedInUser.user); // Update user state with the signed-in user object
-      setUserRole(signedInUser.user.role); // Update userRole state with the role
+      setUser(signedInUser.user); 
+      setUserRole(signedInUser.user.role); 
     } catch (error) {
       console.error('Sign-in error:', error);
     }
@@ -56,9 +58,9 @@ export default function App() {
         <SessionContextProvider supabaseClient={supabase}>
           <Stack.Navigator
             screenOptions={{
-              header: ({ navigation, route, options }) => (
+              header: ({ options }) => (
                 <CustomHeader
-                title={options.headerTitle || "EventCuria"}
+                  title={options.headerTitle || "EventCuria"}
                   isDark={true}
                   user={user}
                   userRole={userRole}
@@ -70,8 +72,8 @@ export default function App() {
             {user ? (
               <>
                 <Stack.Screen
-                  name="HomePage"
-                  component={HomePage}
+                  name="Events"
+                  component={EventWithVenueData}
                   options={{ title: 'Events' }}
                   showBackButton={true}
                 />
@@ -79,24 +81,29 @@ export default function App() {
                   <Stack.Screen
                     name="CreateEvent"
                     component={PostEvent}
-                    options={{ title: 'Create event' }} 
-                    
+                    options={{ title: 'Create event' }}
+
                   />
                 )}
-                <Stack.Screen 
-                name="AboutUs" 
-                component={AboutUs} 
-                options={{ title: 'About Us' }} 
-                /> 
+                <Stack.Screen
+                  name="AboutUs"
+                  component={AboutUs}
+                  options={{ title: 'About Us' }}
+                />
 
                 <Stack.Screen
                   name="EventDetail"
                   component={EventDetails}
                   options={({ route }) => ({
-                    headerTitle: route.params.event.name.text
+                    headerTitle: route.params.event.name.text,
                   })}
+                  initialParams={{ userRole: userRole }}
                   showBackButton={true}
                 />
+                <Stack.Screen
+                name="CreateEventInCalendar"
+                component={CreateEventInCalendar}
+                options={{title: 'Add Event To Calendar'}}/>
               </>
             ) : (
               <Stack.Screen

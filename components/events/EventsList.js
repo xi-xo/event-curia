@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     },
     scrollView: {
         flex: 1,
-        maxHeight: 850, // Adjust the maxHeight as needed
+        maxHeight: 850,
         backgroundColor: "lightgrey",
     },
 });
