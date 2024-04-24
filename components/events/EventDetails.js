@@ -6,6 +6,7 @@ import { getCurrentUser } from '../authenticationMock/AuthService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { mockUsers } from '../../utils/mockUsers'; 
 
+
 export default function EventDetails({ route }) {
     const navigation = useNavigation();
     const { event, userRole } = route.params;
@@ -38,42 +39,42 @@ export default function EventDetails({ route }) {
         );
     }
 
-    const handleSignUp = async (eventId) => {
-    try {
-        console.log("pressable working", eventId);
-
-        const currentUser = await getCurrentUser();
-        console.log("Current user:", currentUser);
-
-        if (!currentUser) {
-            console.log("User is not Authenticated. Redirect to sign-in page... ");
-            navigation.navigate('SignIn');
-            return;
+    async function handleSignUp(eventId) {
+        try {
+            console.log("Signing up for event:", eventId);
+    
+            const currentUser = await getCurrentUser();
+            console.log("Current user:", currentUser);
+    
+            if (!currentUser) {
+                console.log("User is not authenticated. Redirecting to sign-in page... ");
+                navigation.navigate('SignIn');
+                return;
+            }
+            
+            const userRole = currentUser.role;
+    
+            if (mockUsers[userRole]) {
+                mockUsers[userRole].events.push(eventId);
+    
+                console.log("User is authenticated. Proceeding with sign-up...");
+    
+                // Save mockUsers to AsyncStorage
+                await AsyncStorage.setItem('mockUsers', JSON.stringify(mockUsers));
+    
+                console.log("Updated mockUsers in AsyncStorage:", mockUsers);
+    
+                // Pass the event details to CreateEventInCalendar component
+                navigation.navigate('CreateEventInCalendar', { event });
+    
+                console.log("Sign-up successful!");
+            } else {
+                console.error("User role not found in mockUsers:", userRole);
+            }
+        } catch (error) {
+            console.error("Error occurred during sign-up:", error);
         }
-        
-        const userRole = currentUser.role;
-
-        if (mockUsers[userRole]) {
-            mockUsers[userRole].events.push(eventId);
-
-        console.log("Current user role:", currentUser.role); // Log the current user's role
-
-        console.log("User is authenticated. Proceeding with sign-up...");
-
-
-            // Save mockUsers to AsyncStorage
-            await AsyncStorage.setItem('mockUsers', JSON.stringify(mockUsers));
-
-            console.log("Updated mockUsers in AsyncStorage:", mockUsers);
-        } else {
-            console.error("User role not found in mockUsers:", userRole);
-        }
-
-        console.log("Sign-up successful!");
-    } catch (error) {
-        console.error("Error occurred during sign-up:", error);
-    }
-};
+    };
 
     const imageUrl = event.logo ? event.logo.original.url : 'url_of_your_default_image';
 
@@ -99,6 +100,7 @@ export default function EventDetails({ route }) {
             <Pressable style={styles.signUpButton} onPress={() => handleSignUp(eventId)}>
                 {userRole !== 'staff' && <Text style={styles.signUpButtonText}>Sign Up</Text>}
             </Pressable>
+            
         </View>
     );
 }

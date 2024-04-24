@@ -12,6 +12,8 @@ import SignInMock from './components/authenticationMock/SignInMock';
 import PostEvent from './API/PostEvent';
 import { signIn, signOut, getCurrentUser } from './components/authenticationMock/AuthService';
 import AboutUs from './Pages/AboutUs';
+import CreateEventInCalendar from './components/CreateEventInCalendar';
+
 
 
 
@@ -98,6 +100,10 @@ export default function App() {
                   initialParams={{ userRole: userRole }}
                   showBackButton={true}
                 />
+                <Stack.Screen
+                name="CreateEventInCalendar"
+                component={CreateEventInCalendar}
+                options={{title: 'Add Event To Calendar'}}/>
               </>
             ) : (
               <Stack.Screen

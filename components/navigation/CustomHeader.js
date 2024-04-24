@@ -30,6 +30,11 @@ export default function CustomHeader({ isDark, user, userRole, onSignOut }) {
         navigation.navigate('CreateEvent');
     };
 
+    const navigateToAddEventToCalendar = () => {
+        console.log("Navigating to AddEventToGoogleCalendar...");
+        navigation.navigate('AddEventToGoogleCalendar');
+    };
+
     const handleNavigateToAboutUs = () => {
         navigation.navigate('AboutUs');
     };
@@ -43,8 +48,9 @@ export default function CustomHeader({ isDark, user, userRole, onSignOut }) {
         headerTitle = "About Us"; 
     } else if (currentScreenName === "CreateEvent") {
         headerTitle = "Create event"; 
+    } else if (currentScreenName === "AddEventToGoogleCalendar") {
+        headerTitle = "Add Event to Calendar";
     }
-
 
     return (
         <Appbar.Header statusBarHeight={40} dark={isDark} style={{ backgroundColor: '#143D52' }}>
@@ -59,6 +65,7 @@ export default function CustomHeader({ isDark, user, userRole, onSignOut }) {
                     {userRole === 'staff' && (
                         <Menu.Item onPress={navigateToPostEvent} title="Create event" />
                     )}
+                    <Menu.Item onPress={navigateToAddEventToCalendar} title="Add Event to Calendar" />
                     <Menu.Item onPress={handleNavigateToAboutUs} title="About us" />
                     <Menu.Item onPress={handleSignOut} title="Sign Out" />
                 </Menu>
