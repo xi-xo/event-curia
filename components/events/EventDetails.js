@@ -97,9 +97,11 @@ export default function EventDetails({ route }) {
                 venueRegion={venue.address.postal_code}
                 mapImage={mapImage}
             />
-            <Pressable style={styles.signUpButton} onPress={() => handleSignUp(eventId)}>
-                {userRole !== 'staff' && <Text style={styles.signUpButtonText}>Sign Up</Text>}
-            </Pressable>
+            {userRole !== 'staff' && (
+                <Pressable style={styles.signUpButton} onPress={() => handleSignUp(eventId)}>
+                    <Text style={styles.signUpButtonText}>Sign Up</Text>
+                </Pressable>
+            )}
             
         </View>
     );

@@ -17,7 +17,7 @@ To run EventCuria locally on your machine, follow these simple steps:
 **Navigate to the Project Directory:**
 
 ```bash
-cd eventcuria
+cd EventCuria
 ```
 ```bash
 Copy code
@@ -36,8 +36,9 @@ makefile
 Copy code
 REACT_APP_ORGANIZATION_ID=your_organization_id
 REACT_APP_API_TOKEN=your_api_token
-Start the Development Server:
 
+
+Start the Development Server:
 ```bash
 Copy code
 npx expo start
@@ -46,9 +47,10 @@ npx expo start
 Follow the instructions in the terminal to open the app
 **Usage**
 Explore Events: Browse through a curated list of events and find the ones that interest you.
-Sign Up: Click on an event to view details and sign up with ease.
+Sign Up: Click on an event to view details and sign up with ease, once signed up will promp to add to google calendar
 **Technologies Used**
 React Native
 Eventbrite API
-JavaScript
+Google Calendar API
 Supabase
+JavaScript
