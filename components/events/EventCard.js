@@ -7,8 +7,13 @@ export default function EventCard({ event, onPress }) {
 
     const imageUrl = logo ? logo.original.url : null; // Change the default value to null
 
+    const limitedDescription = (text, maxLength) => {
+        if (text.length <= maxLength) return text;
+        return text.substring(0, maxLength) + "..."; // Display only a portion of the description followed by ellipsis
+    };
+
     return (
-        <Pressable onPress={() => onPress(event)}>
+        <Pressable onPress={() => onPress(name.text, event)}>
             <View style={styles.card}>
                 <View style={styles.titleContainer}>
                     <Text style={styles.title}>{name.text}</Text>
@@ -26,7 +31,7 @@ export default function EventCard({ event, onPress }) {
                 {!imageUrl && ( 
                     <ConditionalImage style={styles.ConditionalImage} eventName={name.text} />
                 )}
-                <Text style={styles.description}>{description.text}</Text>
+                <Text style={styles.description}>{limitedDescription(description.text, 100)}</Text>
             </View>
         </Pressable>
     );

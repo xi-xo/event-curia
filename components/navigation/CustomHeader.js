@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Appbar, Menu } from 'react-native-paper';
 import { useNavigation, useNavigationState } from '@react-navigation/native';
 
-export default function CustomHeader({ isDark, user, userRole, onSignOut, isEventSignedUp }) {
+export default function CustomHeader({ isDark, user, userRole, onSignOut, isEventSignedUp, title, eventName }) {
     const [menuVisible, setMenuVisible] = useState(false);
     const navigation = useNavigation();
     const navigationState = useNavigationState(state => state);
+    console.log(eventName);
 
     const openMenu = () => setMenuVisible(true);
     const closeMenu = () => setMenuVisible(false);
@@ -36,7 +37,7 @@ export default function CustomHeader({ isDark, user, userRole, onSignOut, isEven
 
     const currentScreenName = navigationState.routes[navigationState.index].name;
 
-    let headerTitle = "Welcome";
+    let headerTitle = eventName || title;
     if (currentScreenName === "Events") {
         headerTitle = "Events"; 
     } else if (currentScreenName === "AboutUs") {

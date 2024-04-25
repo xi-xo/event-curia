@@ -1,4 +1,3 @@
-// App.js
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -14,9 +13,6 @@ import { signIn, signOut, getCurrentUser } from './components/authenticationMock
 import AboutUs from './Pages/AboutUs';
 import CreateEventInCalendar from './components/CreateEventInCalendar';
 
-
-
-
 const Stack = createStackNavigator();
 const supabase = createClient(
   "https://dvuyyfttynkfiehqkeqv.supabase.co",
@@ -26,7 +22,9 @@ const supabase = createClient(
 export default function App() {
   const [user, setUser] = useState(getCurrentUser()); 
   const [userRole, setUserRole] = useState(null); 
+  const [currentEventName, setCurrentEventName] = useState('');
   console.log("I ma a userRoel from App.js:", userRole);
+
   const handleSignIn = async (email, password) => {
     try {
       console.log("Attempting sign-in with email:", email, "and password:", password);
@@ -51,13 +49,12 @@ export default function App() {
     console.log("User role changed:", userRole);
   }, [user, userRole]);
 
-
   return (
     <PaperProvider>
       <NavigationContainer>
         <SessionContextProvider supabaseClient={supabase}>
           <Stack.Navigator
-            screenOptions={{
+            screenOptions={({ navigation, route }) => ({
               header: ({ options }) => (
                 <CustomHeader
                   title={options.headerTitle || "EventCuria"}
@@ -65,9 +62,10 @@ export default function App() {
                   user={user}
                   userRole={userRole}
                   onSignOut={handleSignOut}
+                  eventName={currentEventName}
                 />
               ),
-            }}
+            })}
           >
             {user ? (
               <>
@@ -82,7 +80,6 @@ export default function App() {
                     name="CreateEvent"
                     component={PostEvent}
                     options={{ title: 'Create event' }}
-
                   />
                 )}
                 <Stack.Screen
@@ -90,20 +87,25 @@ export default function App() {
                   component={AboutUs}
                   options={{ title: 'About Us' }}
                 />
-
                 <Stack.Screen
                   name="EventDetail"
                   component={EventDetails}
                   options={({ route }) => ({
-                    headerTitle: route.params.event.name.text,
+                    headerTitle: route.params.eventName,
                   })}
                   initialParams={{ userRole: userRole }}
                   showBackButton={true}
+                  listeners={({ route }) => {
+                    if (route.params && route.params.eventName) {
+                      setCurrentEventName(route.params.eventName);
+                    }
+                  }}
                 />
                 <Stack.Screen
-                name="CreateEventInCalendar"
-                component={CreateEventInCalendar}
-                options={{title: 'Add Event To Calendar'}}/>
+                  name="CreateEventInCalendar"
+                  component={CreateEventInCalendar}
+                  options={{title: 'Add Event To Calendar'}}
+                />
               </>
             ) : (
               <Stack.Screen
@@ -114,7 +116,6 @@ export default function App() {
               </Stack.Screen>
             )}
           </Stack.Navigator>
-
         </SessionContextProvider>
       </NavigationContainer>
     </PaperProvider>
