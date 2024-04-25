@@ -13,7 +13,7 @@ const SignInMock = ({ onSignIn }) => {
             fadeAnim,
             {
                 toValue: 1,
-                duration: 1000, // Control the duration of the animation
+                duration: 500, // Control the duration of the animation
                 useNativeDriver: true // Add this line for better performance
             }
         ).start();
@@ -60,7 +60,7 @@ const SignInMock = ({ onSignIn }) => {
                     style={({ pressed }) => [
                         styles.button,
                         {
-                            backgroundColor: pressed ? 'rgba(0,0,0,0.6)' : 'rgba(0,0,0,0.8)',
+                            backgroundColor: pressed ? 'rgba(0,0,0,0.5)' : 'rgba(30,91,123,1.5)',
                         },
                     ]}
                     disabled={loading}
@@ -80,14 +80,18 @@ const styles = StyleSheet.create({
         alignItems: 'center', // Center content horizontally
     },
     verticallySpaced: {
-        paddingTop: 4,
+        borderColor: "#E0E0E0",
+        borderWidth: 1,
+        paddingTop: 5,
         paddingBottom: 4,
         alignSelf: 'stretch',
+        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
     },
     mt20: {
         marginTop: 20,
     },
     button: {
+        backgroundColor: '#1E5B7B',
         alignItems: 'center',
         justifyContent: 'center',
         paddingVertical: 12,

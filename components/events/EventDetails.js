@@ -1,20 +1,15 @@
 import React, { useEffect } from 'react';
 import { View, Text, Image, StyleSheet, ActivityIndicator, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import mapImage from "../../assets/3d-pin-map.jpg"
-import { getCurrentUser } from '../authenticationMock/AuthService';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { mockUsers } from '../../utils/mockUsers'; 
+import mapImage from "../../assets/mapImage.png"
+import SignUpButton from '../SignUpButton';
+import ConditionalImage from '../ConditionalImage';
 
 
 export default function EventDetails({ route }) {
     const navigation = useNavigation();
     const { event, userRole } = route.params;
     const { venue } = event;
-
-    console.log("I am a userRole:", userRole);
-
-    const eventId = event.id
 
     const startDatePart = event.start.local.split('T')
     const startTime = startDatePart[1].substring(0, 5);
@@ -39,44 +34,7 @@ export default function EventDetails({ route }) {
         );
     }
 
-    async function handleSignUp(eventId) {
-        try {
-            console.log("Signing up for event:", eventId);
-    
-            const currentUser = await getCurrentUser();
-            console.log("Current user:", currentUser);
-    
-            if (!currentUser) {
-                console.log("User is not authenticated. Redirecting to sign-in page... ");
-                navigation.navigate('SignIn');
-                return;
-            }
-            
-            const userRole = currentUser.role;
-    
-            if (mockUsers[userRole]) {
-                mockUsers[userRole].events.push(eventId);
-    
-                console.log("User is authenticated. Proceeding with sign-up...");
-    
-                // Save mockUsers to AsyncStorage
-                await AsyncStorage.setItem('mockUsers', JSON.stringify(mockUsers));
-    
-                console.log("Updated mockUsers in AsyncStorage:", mockUsers);
-    
-                // Pass the event details to CreateEventInCalendar component
-                navigation.navigate('CreateEventInCalendar', { event });
-    
-                console.log("Sign-up successful!");
-            } else {
-                console.error("User role not found in mockUsers:", userRole);
-            }
-        } catch (error) {
-            console.error("Error occurred during sign-up:", error);
-        }
-    };
-
-    const imageUrl = event.logo ? event.logo.original.url : 'url_of_your_default_image';
+    const imageUrl = event.logo ? event.logo.original.url : null;
 
     return (
         <View style={styles.container}>
@@ -98,19 +56,24 @@ export default function EventDetails({ route }) {
                 mapImage={mapImage}
             />
             {userRole !== 'staff' && (
-                <Pressable style={styles.signUpButton} onPress={() => handleSignUp(eventId)}>
-                    <Text style={styles.signUpButtonText}>Sign Up</Text>
-                </Pressable>
+                <SignUpButton style={styles.SignUpButton} event={event} />
             )}
-            
+
         </View>
     );
 }
-
 const EventHeader = ({ eventName, imageUrl, description }) => (
     <View style={styles.header}>
         <Text style={styles.title}>{eventName}</Text>
-        {imageUrl && <Image style={styles.logo} source={{ uri: imageUrl }} resizeMode="cover" />}
+        {imageUrl && (
+            <Image
+                style={styles.logo}
+                source={{ uri: imageUrl }}
+                resizeMode="cover" />
+        )}
+        {!imageUrl && (
+            <ConditionalImage style={styles.conditionalImage} eventName={eventName} />
+        )}
         <Text style={styles.title}>Description</Text>
         <Text style={styles.description}>{description}</Text>
     </View>
@@ -146,9 +109,7 @@ const EventVenue = ({ venueName, mapImage, venueAddress, venueCity, venuePostCod
                 {venuePostCode && <Text>{venuePostCode}</Text>}
                 {venueRegion && <Text>{venueRegion}</Text>}
             </View>
-            {mapImage && typeof mapImage === 'string' && (
-                <Image style={styles.mapImage} source={{ uri: mapImage }} resizeMode='cover' />
-            )}
+            <Image style={styles.mapImage} source={mapImage} resizeMode='repeat' />
         </View>
     </View>
 );
@@ -167,6 +128,12 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     logo: {
+        width: "100%", 
+        height: 200, 
+        borderRadius: 8,
+        marginBottom: 8,
+    },
+    conditionalImage: {
         borderColor: "#E0E0E0",
         borderWidth: 1,
         boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
@@ -177,7 +144,7 @@ const styles = StyleSheet.create({
     },
     description: {
         borderColor: "#E0E0E0",
-        borderWidth: 1,
+        borderWidth: 2,
         borderRadius: 5,
         fontSize: 16,
         marginBottom: 8,
@@ -216,32 +183,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     venueText: {
+        margin: 30,
         flex: 1,
         marginRight: 8,
     },
     mapImage: {
         width: 150,
         height: 100,
-        right: 50,
-        borderRadius: 30,
-        marginLeft: 20, 
+        borderRadius: 10,
+        margin: 30,
     },
     loadingContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    signUpButton: {
-        backgroundColor: '#1E5B7B',
-        padding: 10,
-        top: 30,
-        paddingVertical: 10,
-        paddingHorizontal: -10,
-        borderRadius: 5,
-        alignItems: 'center',
-        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
-    },
-    signUpButtonText: {
-        color: '#ffffff'
     },
 });
