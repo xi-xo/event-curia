@@ -21,7 +21,6 @@ export default function EventDetails({ route }) {
 
     useEffect(() => {
         if (event && event.name && event.name.text) {
-            console.log("EventDetails: Setting screen title to:", event.name.text)
             navigation.setOptions({ title: event.name.text });
         }
     }, [event, navigation]);
@@ -56,7 +55,9 @@ export default function EventDetails({ route }) {
                 mapImage={mapImage}
             />
             {userRole !== 'staff' && (
-                <SignUpButton style={styles.SignUpButton} event={event} />
+                <Pressable onPress={() => navigation.navigate('CreateEventInCalendar', { event })}> {/* Navigate to CreateEventInCalendar */}
+                    <SignUpButton style={styles.SignUpButton} event={event} navigation={navigation} />
+                </Pressable>
             )}
 
         </View>

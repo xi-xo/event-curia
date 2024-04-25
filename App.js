@@ -23,13 +23,10 @@ export default function App() {
   const [user, setUser] = useState(getCurrentUser()); 
   const [userRole, setUserRole] = useState(null); 
   const [currentEventName, setCurrentEventName] = useState('');
-  console.log("I ma a userRoel from App.js:", userRole);
 
   const handleSignIn = async (email, password) => {
     try {
-      console.log("Attempting sign-in with email:", email, "and password:", password);
       const signedInUser = await signIn(email, password);
-      console.log("Signed in user:", signedInUser);
       setUser(signedInUser.user); 
       setUserRole(signedInUser.user.role); 
     } catch (error) {
@@ -45,8 +42,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    console.log("User state changed:", user);
-    console.log("User role changed:", userRole);
+    
   }, [user, userRole]);
 
   return (

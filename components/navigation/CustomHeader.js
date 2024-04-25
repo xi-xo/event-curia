@@ -6,19 +6,16 @@ export default function CustomHeader({ isDark, user, userRole, onSignOut, isEven
     const [menuVisible, setMenuVisible] = useState(false);
     const navigation = useNavigation();
     const navigationState = useNavigationState(state => state);
-    console.log(eventName);
 
     const openMenu = () => setMenuVisible(true);
     const closeMenu = () => setMenuVisible(false);
 
     const handleSignOut = () => {
-        console.log("Signing out from header menu...");
         onSignOut(); 
         closeMenu(); 
     };
 
     useEffect(() => {
-        console.log("Navigation state changed:", navigationState);
         setMenuVisible(false);
     }, [navigationState]);
 

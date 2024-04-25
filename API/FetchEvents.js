@@ -19,7 +19,6 @@ export default function FetchEvents({ venues }) {
         )
         .then(response => response.json())
         .then(data => {
-            console.log('Fetched events:', data);
             const eventsWithVenues = data.events.map(event => {
                 const venue = venues.find(venue => venue.id === event.venue_id);
                 return { ...event, venue };

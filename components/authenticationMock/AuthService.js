@@ -4,17 +4,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 let currentUser = null;
 
 export const signIn = async (email, password) => {
-    console.log('Attempting sign-in with email:', email, 'and password:', password);
 
     const user = Object.values(mockUsers).find(u => u.username === email);
-    console.log('Found user:', user);
 
     if (user && user.password === password) {
         await AsyncStorage.setItem('currentUser', JSON.stringify({ ...user, role: user.role }));
 
         currentUser = { ...user, role: user.role }; // Update currentUser with role
         // If the user exists and the password matches, return the user object
-        console.log('Sign-in successful for user:', user);
         return { user: { id: '123', email: user.username, role: user.role } };
     } else {
         // If the email or password is invalid, throw an error

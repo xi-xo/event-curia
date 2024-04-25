@@ -16,7 +16,6 @@ export default function FetchEventsVenue({ REACT_APP_API_TOKEN }) {
         )
             .then(response => response.json())
             .then(data => {
-                console.log('Fetched venues: as data', data);
                 setVenues(data.venues);
             })
     }, [REACT_APP_ORGANIZATION_ID, REACT_APP_API_TOKEN]);
