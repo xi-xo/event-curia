@@ -16,14 +16,14 @@ export default function EventCard({ event, onPress }) {
                         {status === 'completed' ? 'Completed' : 'Live'}
                     </Text>
                 </View>
-                {imageUrl && ( // Only render the Image component when imageUrl is available
+                {imageUrl && (
                     <Image
-                        style={styles.image}
+                        style={styles.logo}
                         source={{ uri: imageUrl }}
                         resizeMode="cover"
                     />
                 )}
-                {!imageUrl && ( // Conditionally render the ConditionalImage component when imageUrl is not available
+                {!imageUrl && ( 
                     <ConditionalImage style={styles.ConditionalImage} eventName={name.text} />
                 )}
                 <Text style={styles.description}>{description.text}</Text>
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: "#666",
     },
-    image: {
+    logo: {
         width: "100%", 
         height: 200, 
         borderRadius: 8,

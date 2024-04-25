@@ -34,7 +34,7 @@ export default function EventDetails({ route }) {
         );
     }
 
-    const imageUrl = event.logo ? event.logo.original.url : 'url_of_your_default_image';
+    const imageUrl = event.logo ? event.logo.original.url : null;
 
     return (
         <View style={styles.container}>
@@ -65,10 +65,17 @@ export default function EventDetails({ route }) {
 const EventHeader = ({ eventName, imageUrl, description }) => (
     <View style={styles.header}>
         <Text style={styles.title}>{eventName}</Text>
-        {imageUrl && <Image style={styles.logo} source={{ uri: imageUrl }} resizeMode="cover" />}
+        {imageUrl && (
+            <Image
+                style={styles.logo}
+                source={{ uri: imageUrl }}
+                resizeMode="cover" />
+        )}
+        {!imageUrl && (
+            <ConditionalImage style={styles.conditionalImage} eventName={eventName} />
+        )}
         <Text style={styles.title}>Description</Text>
         <Text style={styles.description}>{description}</Text>
-
     </View>
 );
 
@@ -121,6 +128,12 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     logo: {
+        width: "100%", 
+        height: 200, 
+        borderRadius: 8,
+        marginBottom: 8,
+    },
+    conditionalImage: {
         borderColor: "#E0E0E0",
         borderWidth: 1,
         boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
