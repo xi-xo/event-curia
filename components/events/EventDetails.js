@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, Text, Image, StyleSheet, ActivityIndicator, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import mapImage from "../../assets/3d-pin-map.jpg"
+import mapImage from "../../assets/mapImage.png"
 import SignUpButton from '../SignUpButton';
 
 export default function EventDetails({ route }) {
@@ -54,9 +54,9 @@ export default function EventDetails({ route }) {
                 mapImage={mapImage}
             />
             {userRole !== 'staff' && (
-                <SignUpButton event={event}/>
+                <SignUpButton style={styles.SignUpButton} event={event} />
             )}
-            
+
         </View>
     );
 }
@@ -99,9 +99,7 @@ const EventVenue = ({ venueName, mapImage, venueAddress, venueCity, venuePostCod
                 {venuePostCode && <Text>{venuePostCode}</Text>}
                 {venueRegion && <Text>{venueRegion}</Text>}
             </View>
-            {mapImage && typeof mapImage === 'string' && (
-                <Image style={styles.mapImage} source={{ uri: mapImage }} resizeMode='cover' />
-            )}
+            <Image style={styles.mapImage} source={mapImage} resizeMode='repeat' />
         </View>
     </View>
 );
@@ -130,7 +128,7 @@ const styles = StyleSheet.create({
     },
     description: {
         borderColor: "#E0E0E0",
-        borderWidth: 1,
+        borderWidth: 2,
         borderRadius: 5,
         fontSize: 16,
         marginBottom: 8,
@@ -169,15 +167,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     venueText: {
+        margin: 30,
         flex: 1,
         marginRight: 8,
     },
     mapImage: {
         width: 150,
         height: 100,
-        right: 50,
-        borderRadius: 30,
-        marginLeft: 20, 
+        borderRadius: 10,
+        margin: 30,
     },
     loadingContainer: {
         flex: 1,
