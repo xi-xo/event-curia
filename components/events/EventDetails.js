@@ -3,6 +3,8 @@ import { View, Text, Image, StyleSheet, ActivityIndicator, Pressable } from 'rea
 import { useNavigation } from '@react-navigation/native';
 import mapImage from "../../assets/mapImage.png"
 import SignUpButton from '../SignUpButton';
+import ConditionalImage from '../ConditionalImage';
+
 
 export default function EventDetails({ route }) {
     const navigation = useNavigation();
@@ -66,6 +68,7 @@ const EventHeader = ({ eventName, imageUrl, description }) => (
         {imageUrl && <Image style={styles.logo} source={{ uri: imageUrl }} resizeMode="cover" />}
         <Text style={styles.title}>Description</Text>
         <Text style={styles.description}>{description}</Text>
+
     </View>
 );
 
