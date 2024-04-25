@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Pressable, TextInput, View, ActivityIndicator, Text, StyleSheet, ScrollView } from "react-native";
+import { Pressable, TextInput, View, ActivityIndicator, Text, StyleSheet, ScrollView, Alert } from "react-native";
 import { REACT_APP_ORGANIZATION_ID, REACT_APP_API_TOKEN } from '@env';
 import CreateVenue from "../API/CreateVenue";
 import CreateTicketClass from "./CreateTicketClass";
@@ -31,14 +31,14 @@ export default function PostEvent() {
 
     const handleCreateEvent = async () => {
         // Input validation
-        if (!eventName.trim() || !eventDescription.trim() || !capacity.trim()) {
-            alert('Please enter event name, description, and capacity.');
+        if (!eventName.trim() || !eventDescription.trim() || !capacity.trim() || isNaN(capacity)) {
+            Alert.alert('Invalid input', 'Please enter event name, description, and a valid capacity.');
             return;
         }
 
         // Check if a venue has been created
         if (!createdVenueId) {
-            alert('Please create a venue.');
+            Alert.alert('Missing venue', 'Please create a venue before proceeding.');
             return;
         }
 
@@ -84,14 +84,14 @@ export default function PostEvent() {
 
             if (response.ok) {
                 setCreatedEventId(data.id);
-                alert('Event created successfully');
+                Alert.alert('Event created', 'Event created successfully.');
                 setStep(step + 1); // Move to the next step
             } else {
                 throw new Error(`Error creating event: ${data.error_description}`);
             }
         } catch (error) {
             console.error('Error creating event:', error.message);
-            alert('An error occurred while creating the event. Please try again later.');
+            Alert.alert('Error', 'An error occurred while creating the event. Please try again later.');
         } finally {
             setLoading(false);
         }
@@ -125,7 +125,7 @@ export default function PostEvent() {
                             style={styles.input}
                         />
                         <TextInput
-                            placeholder="Capacity"
+                            placeholder="attendees capacity"
                             onChangeText={setCapacity}
                             value={capacity}
                             keyboardType="numeric"
