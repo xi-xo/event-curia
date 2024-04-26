@@ -5,11 +5,11 @@ import ConditionalImage from "../ConditionalImage";
 export default function EventCard({ event, onPress }) {
     const { name, logo, description, status } = event;
 
-    const imageUrl = logo ? logo.original.url : null; // Change the default value to null
+    const imageUrl = logo ? logo.original.url : null; 
 
     const limitedDescription = (text, maxLength) => {
         if (text.length <= maxLength) return text;
-        return text.substring(0, maxLength) + "..."; // Display only a portion of the description followed by ellipsis
+        return text.substring(0, maxLength) + "..."; 
     };
 
     return (

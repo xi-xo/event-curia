@@ -13,7 +13,6 @@ export default function CreateTicketClass({ eventId, onSuccess }) {
     const [loading, setLoading] = useState(false);
 
     const handleCreateTicketClass = async () => {
-        // Input validation
         if (!ticketName.trim() || !ticketDescription.trim() || !quantityTotal.trim()) {
             Alert.alert('Error', 'Please enter ticket name, description, and quantity.');
             return;
@@ -30,12 +29,12 @@ export default function CreateTicketClass({ eventId, onSuccess }) {
                 ticket_class: {
                     name: ticketName,
                     description: ticketDescription,
-                    sorting: 5, // Adjust as needed
-                    cost: "GBP,0", // Format cost parameter correctly
+                    sorting: 5, 
+                    cost: "GBP,0", 
                     donation: false,
                     free: true,
                     delivery_methods: ['electronic'],
-                    quantity_total: parseInt(quantityTotal), // Parse quantityTotal to integer
+                    quantity_total: parseInt(quantityTotal), 
                 }
             };
 
@@ -56,7 +55,6 @@ export default function CreateTicketClass({ eventId, onSuccess }) {
                 throw new Error(`Error creating ticket class: ${data.error_description}`);
             }
 
-            // Ticket class created successfully
             onSuccess(data.id);
             console.log("Ticket class created successfully:", data);
         } catch (error) {
@@ -85,7 +83,7 @@ export default function CreateTicketClass({ eventId, onSuccess }) {
                 placeholder="Quantity"
                 onChangeText={setQuantityTotal}
                 value={quantityTotal}
-                keyboardType="numeric" // Set keyboard type to numeric
+                keyboardType="numeric" 
                 style={styles.input}
             />
             <Pressable disabled={loading} onPress={handleCreateTicketClass} style={({ pressed }) => [

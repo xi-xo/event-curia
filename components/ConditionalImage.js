@@ -5,7 +5,7 @@ const ConditionalImage = ({ eventName, style, ...props }) => {
     let source;
 
     if (typeof eventName !== 'string') {
-        return null; // Return null if eventName is not a string
+        return null; 
     }
 
     switch (true) {

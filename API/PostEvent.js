@@ -30,13 +30,11 @@ export default function PostEvent() {
     };
 
     const handleCreateEvent = async () => {
-        // Input validation
         if (!eventName.trim() || !eventDescription.trim() || !capacity.trim() || isNaN(capacity)) {
             Alert.alert('Invalid input', 'Please enter event name, description, and a valid capacity.');
             return;
         }
 
-        // Check if a venue has been created
         if (!createdVenueId) {
             Alert.alert('Missing venue', 'Please create a venue before proceeding.');
             return;
@@ -85,7 +83,7 @@ export default function PostEvent() {
             if (response.ok) {
                 setCreatedEventId(data.id);
                 Alert.alert('Event created', 'Event created successfully.');
-                setStep(step + 1); // Move to the next step
+                setStep(step + 1); 
             } else {
                 throw new Error(`Error creating event: ${data.error_description}`);
             }
@@ -99,7 +97,7 @@ export default function PostEvent() {
 
     const handleTicketClassSuccess = (ticketClassId) => {
         console.log('Ticket class created successfully:', ticketClassId);
-        setStep(step + 1); // Move to the next step
+        setStep(step + 1); 
     };
 
     return (

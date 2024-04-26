@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, ActivityIndicator, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import mapImage from "../../assets/mapImage.png"
 import SignUpButton from '../SignUpButton';
 import ConditionalImage from '../ConditionalImage';
-
+import PopupMessage from '../PopUpMessage';
 
 export default function EventDetails({ route }) {
     const navigation = useNavigation();
@@ -24,6 +24,17 @@ export default function EventDetails({ route }) {
             navigation.setOptions({ title: event.name.text });
         }
     }, [event, navigation]);
+
+    const handleSignUpResult = (success) => {
+        if (success) {
+            setShowSuccessMessage(true);
+        } else {
+            setShowErrorMessage(true);
+        }
+    };
+
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false); 
+    const [showErrorMessage, setShowErrorMessage] = useState(false); 
 
     if (!venue) {
         return (
@@ -55,14 +66,29 @@ export default function EventDetails({ route }) {
                 mapImage={mapImage}
             />
             {userRole !== 'staff' && (
-                <Pressable onPress={() => navigation.navigate('CreateEventInCalendar', { event })}> {/* Navigate to CreateEventInCalendar */}
-                    <SignUpButton style={styles.SignUpButton} event={event} navigation={navigation} />
-                </Pressable>
+                <SignUpButton
+                    style={styles.SignUpButton}
+                    event={event}
+                    navigation={navigation}
+                    onSignUp={handleSignUpResult}
+                />
             )}
 
+            <PopupMessage
+                message="Sign-up successful! Add event to Google Calendar."
+                visible={showSuccessMessage}
+                onClose={() => setShowSuccessMessage(false)}
+            />
+
+            <PopupMessage
+                message="Sign-up failed. Please try again later."
+                visible={showErrorMessage}
+                onClose={() => setShowErrorMessage(false)}
+            />
         </View>
     );
 }
+
 const EventHeader = ({ eventName, imageUrl, description }) => (
     <View style={styles.header}>
         <Text style={styles.title}>{eventName}</Text>
@@ -114,6 +140,7 @@ const EventVenue = ({ venueName, mapImage, venueAddress, venueCity, venuePostCod
         </View>
     </View>
 );
+
 
 const styles = StyleSheet.create({
     container: {
