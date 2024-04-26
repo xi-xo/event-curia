@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { useSession, useSupabaseClient, useSessionContext } from "@supabase/auth-helpers-react";
-import { View, Text, StyleSheet, Pressable, ScrollView, TextInput } from "react-native";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
+import { View, Text, StyleSheet, Pressable, TextInput, ActivityIndicator } from "react-native";
 import DateTimePicker from "react-datetime-picker";
+import PopupMessage from "./PopUpMessage";
 
 export default function CreateEventInCalendar({ route }) {
     const { event } = route.params;
@@ -9,12 +10,15 @@ export default function CreateEventInCalendar({ route }) {
     const [end, setEnd] = useState(new Date(event.end.local));
     const [eventName, setEventName] = useState(event.name.text);
     const [eventDescription, setEventDescription] = useState(event.description.text);
+    const [isLoading, setIsLoading] = useState(false);
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [showErrorMessage, setShowErrorMessage] = useState(false);
 
     const session = useSession();
     const supabase = useSupabaseClient();
-    const { isLoading } = useSessionContext();
 
     async function googleSignIn() {
+        setIsLoading(true);
         try {
             await supabase.auth.signInWithOAuth({
                 provider: 'google',
@@ -27,6 +31,8 @@ export default function CreateEventInCalendar({ route }) {
         } catch (error) {
             alert("Error logging in to Google provider with Supabase");
             console.error(error);
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -36,22 +42,25 @@ export default function CreateEventInCalendar({ route }) {
 
     async function CreateCalendarEvent() {
         console.log("Creating Calendar Event");
-        const eventDetails = {
-            'summary': eventName,
-            'description': eventDescription,
-            'start': {
-                'dateTime': start.toISOString(),
-                'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
-            },
-            'end': {
-                'dateTime': end.toISOString(),
-                'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
-            },
-        };
-        // Log event details
-        console.log("Event details:", eventDetails);
+        // Your event creation logic here...
         try {
-            // Your event creation logic here...
+            // Set state to indicate loading
+            setIsLoading(true);
+            const eventDetails = {
+                'summary': eventName,
+                'description': eventDescription,
+                'start': {
+                    'dateTime': start.toISOString(),
+                    'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
+                },
+                'end': {
+                    'dateTime': end.toISOString(),
+                    'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
+                },
+            };
+            // Log event details
+            console.log("Event details:", eventDetails);
+            // Make API call to create event
             const response = await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events", {
                 method: "POST",
                 headers: {
@@ -59,26 +68,33 @@ export default function CreateEventInCalendar({ route }) {
                 },
                 body: JSON.stringify(eventDetails)
             });
+            if (!response.ok) {
+                throw new Error('Failed to create event');
+            }
             const data = await response.json();
             console.log("Response from Google Calendar API:", data);
-            alert("Event created, check your Google Calendar");
+            // Set state to show success message
+            setShowSuccessMessage(true);
         } catch (error) {
             console.error("Error occurred while creating event:", error);
-            alert("Error occurred while creating event: " + error.message);
+            // Set state to show error message
+            setShowErrorMessage(true);
+        } finally {
+            // Set state to indicate loading has finished
+            setIsLoading(false);
         }
     }
 
     return (
-
-        <View style={styles.Container}>
+        <View style={styles.container}>
             {session ? (
                 <>
                     <View style={styles.googleUser}>
-                        <Text style={styles.googleUser}>Signed in as:</Text>
-                        <Text style={styles.googleUser}>{session.user.email}</Text>
+                        <Text style={styles.userInfoText}>Signed in as:</Text>
+                        <Text style={styles.userInfoText}>{session.user.email}</Text>
                     </View>
 
-                    <View style={styles.eventDetailsConatiner}>
+                    <View style={styles.eventDetailsContainer}>
                         <Text style={styles.infoTitle}>Event Name</Text>
                         <TextInput
                             style={styles.input}
@@ -92,7 +108,6 @@ export default function CreateEventInCalendar({ route }) {
                             onChangeText={setEventDescription}
                         />
 
-
                         <Text style={styles.infoTitle}>START:</Text>
                         <DateTimePicker
                             onChange={setStart}
@@ -104,86 +119,87 @@ export default function CreateEventInCalendar({ route }) {
                             value={end}
                         />
                     </View>
-                    <hr />
+
                     <View style={styles.buttonContainer}>
-                        <Pressable style={styles.buttons} onPress={CreateCalendarEvent}>
+                        <Pressable style={styles.button} onPress={CreateCalendarEvent}>
                             <Text style={styles.buttonText}>Create Event</Text>
                         </Pressable>
-                        <Pressable style={styles.buttonSignOut} onPress={signOut}>
+                        <Pressable style={styles.button} onPress={signOut}>
                             <Text style={styles.buttonText}>Sign Out</Text>
                         </Pressable>
                     </View>
                 </>
             ) : (
-                <Pressable style={styles.buttons} onPress={googleSignIn}>
+                <Pressable style={styles.button} onPress={googleSignIn}>
                     <Text style={styles.buttonText}>Sign In With Google</Text>
                 </Pressable>
             )}
+
+            {isLoading && <ActivityIndicator size="large" color="#1E5B7B" />}
+
+            {showSuccessMessage && !showErrorMessage && (
+                <PopupMessage
+                    message="Event successfully added to your Google Calendar!"
+                    onClose={() => setShowSuccessMessage(false)}
+                />
+            )}
+
+            {showErrorMessage && (
+                <PopupMessage
+                    message="Error occurred while adding the event to your Google Calendar. To fix issue Sign out and Sign in again."
+                    onClose={() => setShowErrorMessage(false)}
+                />
+            )}
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
-    Container: {
-        width: "100%",
+    container: {
+        flex: 1,
         justifyContent: 'center',
+        alignItems: 'center',
         padding: 20,
-
     },
     googleUser: {
-        fontSize: 14,
-        fontWeight: "bold",
-        marginBottom: 8,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        marginBottom: 20,
+    },
+    userInfoText: {
+        fontSize: 16,
+        fontWeight: 'bold',
         color: "#666",
     },
-    eventDetailsConatiner: {
-        padding: 50,
-        flex: 2
-    },
-    dateTimePickerView: {
-        flex: 1,
-        padding: 16,
+    eventDetailsContainer: {
+        marginBottom: 20,
     },
     infoTitle: {
         fontWeight: "bold",
         fontSize: 16,
         color: "#666",
-    },
-    buttonContainer: {
-        flexDirection: "row",
-        marginTop: 20,
-        justifyContent: 'space-evenly',
-        adding: 16,
-    },
-    buttons: {
-        backgroundColor: '#1E5B7B',
-        padding: 10,
-        top: 30,
-        paddingVertical: 10,
-        paddingHorizontal: -10,
-        borderRadius: 5,
-        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
-    },
-    buttonSignOut: {
-        backgroundColor: '#FE6464',
-        padding: 10,
-        top: 30,
-        paddingVertical: 10,
-        paddingHorizontal: -10,
-        borderRadius: 5,
-        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
-    },
-    buttonText: {
-        color: '#ffffff'
+        marginBottom: 5,
     },
     input: {
         borderWidth: 1,
         borderColor: '#ccc',
         borderRadius: 5,
         padding: 10,
-        marginTop: 5,
         marginBottom: 10,
+        width: '100%',
+    },
+    buttonContainer: {
+        flexDirection: "row",
+        justifyContent: "space-evenly",
+        width: '100%',
+    },
+    button: {
+        backgroundColor: '#1E5B7B',
+        padding: 10,
+        borderRadius: 5,
+        width: '45%',
+        alignItems: 'center',
+    },
+    buttonText: {
+        color: '#ffffff',
+        fontWeight: 'bold',
     },
 });

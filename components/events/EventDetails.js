@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, ActivityIndicator, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import mapImage from "../../assets/mapImage.png"
 import SignUpButton from '../SignUpButton';
 import ConditionalImage from '../ConditionalImage';
-
+import PopUpMessage from "../../components/PopUpMessage"; // Import the PopupMessage component
 
 export default function EventDetails({ route }) {
     const navigation = useNavigation();
@@ -35,6 +35,22 @@ export default function EventDetails({ route }) {
 
     const imageUrl = event.logo ? event.logo.original.url : null;
 
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [showErrorMessage, setShowErrorMessage] = useState(false);
+
+    async function CreateCalendarEvent() {
+        console.log("Creating Calendar Event");
+        // Your event creation logic here...
+        try {
+            // Set state to show success message
+            setShowSuccessMessage(true);
+        } catch (error) {
+            console.error("Error occurred while creating event:", error);
+            // Set state to show error message
+            setShowErrorMessage(true);
+        }
+    }
+
     return (
         <View style={styles.container}>
             <EventHeader eventName={event.name.text} imageUrl={imageUrl} description={event.description.text} />
@@ -55,14 +71,30 @@ export default function EventDetails({ route }) {
                 mapImage={mapImage}
             />
             {userRole !== 'staff' && (
-                <Pressable onPress={() => navigation.navigate('CreateEventInCalendar', { event })}> {/* Navigate to CreateEventInCalendar */}
+                <Pressable onPress={() => CreateCalendarEvent()}>
                     <SignUpButton style={styles.SignUpButton} event={event} navigation={navigation} />
                 </Pressable>
             )}
 
+            {/* Display the success message popup if showSuccessMessage is true */}
+            {showSuccessMessage && (
+                <PopUpMessage
+                    message="Event successfully added to your Google Calendar!"
+                    onClose={() => setShowSuccessMessage(false)}
+                />
+            )}
+
+            {/* Display the error message popup if showErrorMessage is true */}
+            {showErrorMessage && (
+                <PopUpMessage
+                    message="Error occurred while adding the event to your Google Calendar. Please try again later."
+                    onClose={() => setShowErrorMessage(false)}
+                />
+            )}
         </View>
     );
 }
+
 const EventHeader = ({ eventName, imageUrl, description }) => (
     <View style={styles.header}>
         <Text style={styles.title}>{eventName}</Text>
