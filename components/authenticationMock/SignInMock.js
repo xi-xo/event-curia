@@ -13,8 +13,8 @@ const SignInMock = ({ onSignIn }) => {
             fadeAnim,
             {
                 toValue: 1,
-                duration: 500, // Control the duration of the animation
-                useNativeDriver: true // Add this line for better performance
+                duration: 500, 
+                useNativeDriver: true 
             }
         ).start();
     }, []);
@@ -22,7 +22,6 @@ const SignInMock = ({ onSignIn }) => {
     const handleSignIn = async () => {
         setLoading(true);
         try {
-            // Call onSignIn with email and password
             await onSignIn(email, password);
         } catch (error) {
             Alert.alert('Sign-in error', error.message);
@@ -77,7 +76,7 @@ const styles = StyleSheet.create({
     container: {
         marginTop: 40,
         padding: 12,
-        alignItems: 'center', // Center content horizontally
+        alignItems: 'center', 
     },
     verticallySpaced: {
         borderColor: "#E0E0E0",

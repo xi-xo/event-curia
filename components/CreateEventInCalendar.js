@@ -42,9 +42,7 @@ export default function CreateEventInCalendar({ route }) {
 
     async function CreateCalendarEvent() {
         console.log("Creating Calendar Event");
-        // Your event creation logic here...
         try {
-            // Set state to indicate loading
             setIsLoading(true);
             const eventDetails = {
                 'summary': eventName,
@@ -58,13 +56,10 @@ export default function CreateEventInCalendar({ route }) {
                     'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
                 },
             };
-            // Log event details
-            console.log("Event details:", eventDetails);
-            // Make API call to create event
             const response = await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events", {
                 method: "POST",
                 headers: {
-                    'Authorization': 'Bearer ' + session.provider_token // Access token for google
+                    'Authorization': 'Bearer ' + session.provider_token 
                 },
                 body: JSON.stringify(eventDetails)
             });
@@ -73,14 +68,11 @@ export default function CreateEventInCalendar({ route }) {
             }
             const data = await response.json();
             console.log("Response from Google Calendar API:", data);
-            // Set state to show success message
             setShowSuccessMessage(true);
         } catch (error) {
             console.error("Error occurred while creating event:", error);
-            // Set state to show error message
             setShowErrorMessage(true);
         } finally {
-            // Set state to indicate loading has finished
             setIsLoading(false);
         }
     }

@@ -11,7 +11,6 @@ export default function CreateVenue({ onSuccess }) {
     const [loading, setLoading] = useState(false);
 
     const handleCreateVenue = async () => {
-        // Input validation
         if (!venueName.trim() || !venueAddress.trim() || !venueCity.trim() || !venuePostalCode.trim() || !venueRegion.trim()) {
             alert('Please enter venue name, address, city, postal code, and region.');
             return;
@@ -49,7 +48,6 @@ export default function CreateVenue({ onSuccess }) {
 
             console.log("Venue created successfully:", data);
 
-            // Invoke onSuccess callback with venue data
             onSuccess(data.id);
         } catch (error) {
             console.error('Error creating venue:', error);

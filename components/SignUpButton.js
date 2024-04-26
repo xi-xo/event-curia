@@ -4,7 +4,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getCurrentUser } from '../components/authenticationMock/AuthService';
 import { mockUsers } from '../utils/mockUsers';
 
-const SignUpButton = ({ event, navigation }) => {
+const SignUpButton = ({ event, navigation, onSignUp }) => {
+    
     const handleSignUp = async () => {
         try {
             const currentUser = await getCurrentUser();
@@ -24,14 +25,15 @@ const SignUpButton = ({ event, navigation }) => {
                 await AsyncStorage.setItem('mockUsers', JSON.stringify(mockUsers));
     
                 console.log("Updated mockUsers after sign-up:", mockUsers);
-
-                // Navigate to CreateEventInCalendar
+                onSignUp(true);
+                await new Promise(resolve => setTimeout(resolve, 2000)); 
                 navigation.navigate('CreateEventInCalendar', { event });
             } else {
                 console.error("User not found or invalid role:", currentUser);
             }
         } catch (error) {
             console.error("Error occurred during sign-up:", error);
+            onSignUp(false);
         }
     };
 
