@@ -1,3 +1,15 @@
+/**
+ * VenuesList Component
+ * 
+ * This component displays a list of venues along with the events associated with each venue.
+ * 
+ * Props:
+ * - venues: Array of venue objects
+ * 
+ * @param {Array} venues - Array of venue objects
+ * @returns {JSX.Element} - JSX element representing the VenuesList component
+ */
+
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
 import EventsList from "../events/EventsList";

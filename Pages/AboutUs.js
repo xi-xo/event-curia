@@ -1,3 +1,13 @@
+/**
+ * AboutUs Component
+ * 
+ * Component providing information about the Event Curia application.
+ * 
+ * This component displays information about the Event Curia application, including its purpose and features.
+ * 
+ * @returns {JSX.Element} - JSX element representing the AboutUs component.
+ */
+
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import ecLogo from '../assets/EC logo.png';

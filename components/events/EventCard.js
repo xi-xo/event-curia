@@ -1,3 +1,18 @@
+/**
+ * EventCard Component
+ * 
+ * This component represents a card to display event information.
+ * It includes the event name, logo (if available), status,
+ * and a brief description.
+ * 
+ * Props:
+ * - event: Object containing event information (name, logo, description, status)
+ * - onPress: Function to handle press event
+ * 
+ * @param {Object} event - Event object containing name, logo, description, and status
+ * @param {Function} onPress - Function to handle press event
+ * @returns {JSX.Element} - JSX element representing the EventCard
+ */
 import React from "react";
 import { View, StyleSheet, Text, Image, Pressable } from "react-native";
 import ConditionalImage from "../ConditionalImage";

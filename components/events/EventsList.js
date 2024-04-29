@@ -1,3 +1,17 @@
+/**
+ * EventsList Component
+ * 
+ * This component renders a list of events using EventCard components within a ScrollView.
+ * 
+ * Props:
+ * - events: An array of event objects to be displayed
+ * - venue: Information about the venue associated with the events
+ * 
+ * @param {Object} events - An array of event objects
+ * @param {Object} venue - Information about the venue associated with the events
+ * @returns {JSX.Element} - JSX element representing the EventsList component
+ */
+
 import React from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";

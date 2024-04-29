@@ -1,3 +1,17 @@
+/**
+ * PublishEvent Component
+ * 
+ * Component responsible for publishing an event using the Eventbrite API.
+ * 
+ * This component handles the logic for publishing an event with the specified eventId using the Eventbrite API.
+ * 
+ * Props:
+ * - eventId: The ID of the event to be published.
+ * 
+ * @param {string} eventId - The ID of the event to be published.
+ * @returns {JSX.Element} - JSX element representing the PublishEvent component.
+ */
+
 import React, { useState } from "react";
 import { Pressable, Text, ActivityIndicator, StyleSheet } from "react-native";
 import { REACT_APP_ORGANIZATION_ID, REACT_APP_API_TOKEN } from '@env';

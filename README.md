@@ -7,6 +7,8 @@ Sign Up Effortlessly: Easily sign up for events directly from the app with just 
 Stay Informed: Get detailed event information including name, description, date, time, venue, and capacity.
 Responsive Design: Enjoy a seamless experience on both Android and iOS devices.
 
+
+
 ## Installation
 To run EventCuria locally on your machine, follow these simple steps:
 
@@ -24,9 +26,14 @@ cd EventCuria
 npm install
 ```
 
-## Set Up Environment Variables:
 
-### Create a file named .env in the root directory of the project.
+## Set Up Environment Variables:
+***Install `react-native-dotenv`***
+```bash
+npm install --save @env/react-native-dotenv
+```
+
+### Create a .env file in the root directory of the project.
 ***makefile***
 ```bash
 env.
@@ -40,18 +47,57 @@ REACT_APP_ORGANIZATION_ID=your_organization_id
 REACT_APP_API_TOKEN=your_api_token
 ```
 
+***You can access these variables in your code  as follows***
+```bash
+import { REACT_APP_API_KEY, REACT_APP_API_URL } from '@env';
+```
 
+## Additional requirements
+### Set up Supabase: ###
 
+**1. Sign up and create a new project:**
 
-***Start the Development Server:***
+Go to the [Supabase official website](https://supabase.com/). and sign up for an account if you haven't already. Create a new project.
+
+**2. Set up authentication:** 
+
+Enable authentication for your project in the Supabase dashboard. You can choose the authentication provider (e.g., email/password, Google, etc.). For Google authentication, you'll need to set up OAuth credentials.
+
+### Obtain Google Calendar API Credentials: 
+**1. Create a new project in Google Cloud Console:**
+
+Create a new project if you haven't already.
+
+**2. Enable the Google Calendar API:**
+
+Search for "Google Calendar API" in the API Library and enable it for your project.
+
+**3. Create OAuth 2.0 Credentials:**
+
+Navigate to the "Credentials" tab in the API Console. Click on "Create Credentials" and select "OAuth client ID". Choose the application type (Web application or Mobile application) depending on your use case.
+
+**4. Configure OAuth consent screen:**
+Set up the OAuth consent screen by providing necessary details like the application name, support email, etc. Add required scopes (e.g., https://www.googleapis.com/auth/calendar) to access user's calendar.
+
+**5. Get client ID and client secret:**
+
+After creating OAuth credentials, you'll get a client ID and client secret. Keep these credentials secure.
+
+``` 
+make sure you to add your Supabase url and anon public key in App.js line 39 & 40
+```
+## Finally Start the Development Server:
 ```bash
 npx expo start
 ```
+
 **Run the App on Your Device:**
 Follow the instructions in the terminal to open the app
 **Usage**
 Explore Events: Browse through a curated list of events and find the ones that interest you.
 Sign Up: Click on an event to view details and sign up with ease, once signed up will promp to add to google calendar
+
+##
 ## Technologies Used ##
 <div style="display:flex; flex-direction: row; flex-wrap: wrap;">
     <div style="flex: 1; padding-right: 20px;">

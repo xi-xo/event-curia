@@ -1,5 +1,22 @@
+/**
+ * EventDetails Component
+ * 
+ * This component displays detailed information about an event, including its name,
+ * logo, description, start and end date/time, venue, and sign-up functionality.
+ * 
+ * Components Within Component Approach:
+ * - This component utilizes separate functional components for EventHeader, EventInfo, and EventVenue
+ *   to enhance code organization and maintainability.
+ * 
+ * Props:
+ * - route: Object containing route parameters
+ * 
+ * @param {Object} route - Route object containing parameters
+ * @returns {JSX.Element} - JSX element representing the EventDetails component
+ */
+
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, ActivityIndicator, Pressable } from 'react-native';
+import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import mapImage from "../../assets/mapImage.png"
 import SignUpButton from '../SignUpButton';

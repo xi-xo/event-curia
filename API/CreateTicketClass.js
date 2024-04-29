@@ -1,3 +1,45 @@
+/**
+ * CreateTicketClass Component
+ * 
+ * Component responsible for creating ticket classes for events. 
+ * Allows users to input ticket details such as name, description, and quantity,
+ * and then sends the information to the Eventbrite API to create the ticket class.
+ * 
+ * This component is used in the event creation process to add ticket classes 
+ * to the events being created.
+ * 
+ * Props:
+ * - eventId: ID of the event for which the ticket class is being created.
+ * - onSuccess: Callback function invoked when the ticket class is successfully created.
+ * 
+ * @param {string} eventId - ID of the event for which the ticket class is being created.
+ * @param {Function} onSuccess - Callback function invoked when the ticket class is successfully created.
+ * 
+ * @returns {JSX.Element} - JSX element representing the CreateTicketClass component
+ * 
+ * State:
+ * - ticketName: Stores the name of the ticket being created.
+ * - ticketDescription: Stores the description of the ticket being created.
+ * - quantityTotal: Stores the total quantity of tickets being created.
+ * - loading: Indicates whether the component is in a loading state (e.g., while fetching data or performing an operation).
+ * 
+ * Methods:
+ * - handleCreateTicketClass: Handles the process of creating a ticket class, including input validation, API call, and state updates.
+ * 
+ * External Dependencies:
+ * - react: "^17.0.2"
+ * - react-native: "^0.66.4"
+ * - @env: "^1.0.6"
+ * 
+ * @requires react
+ * @requires react-native
+ * @requires @env
+ * 
+ * @props {string} eventId - ID of the event for which the ticket class is being created.
+ * @props {Function} onSuccess - Callback function invoked when the ticket class is successfully created.
+ * @params None
+ */
+
 import React, { useState } from "react";
 import { Pressable, TextInput, View, ActivityIndicator, Text, Alert, StyleSheet } from "react-native";
 import { REACT_APP_ORGANIZATION_ID, REACT_APP_API_TOKEN } from '@env';
