@@ -1,3 +1,17 @@
+/**
+ * SignInMock Component
+ * 
+ * This component provides a mock sign-in interface with email and password fields.
+ * 
+ * It includes animations for the logo and error handling for sign-in attempts.
+ * 
+ * Props:
+ * - onSignIn: Function to handle sign-in process
+ * 
+ * @param {Function} onSignIn - Function to handle sign-in process
+ * @returns {JSX.Element} - JSX element representing the SignInMock component
+ */
+
 import React, { useState, useEffect } from 'react';
 import { Alert, StyleSheet, View, Pressable, Text, TextInput, Image, Animated } from 'react-native';
 import ecLogo from '../../assets/EC logo.png';

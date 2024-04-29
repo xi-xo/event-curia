@@ -1,3 +1,32 @@
+/**
+ * CreateVenue Component
+ * 
+ * Component responsible for creating a venue. Handles input for venue name, address, city,
+ * postal code, and region.
+ * 
+ * This component provides an interface for users to input venue details and create a venue.
+ * 
+ * Props:
+ * - onSuccess: Function to be called upon successful creation of the venue. Accepts the venue ID as a parameter.
+ * 
+ * @param {Function} onSuccess - Callback function invoked upon successful venue creation.
+ * @returns {JSX.Element} - JSX element representing the CreateVenue component
+ * 
+ * State:
+ * - venueName: Stores the name of the venue being created.
+ * - venueAddress: Stores the address of the venue being created.
+ * - venueCity: Stores the city of the venue being created.
+ * - venuePostalCode: Stores the postal code of the venue being created.
+ * - venueRegion: Stores the region of the venue being created.
+ * - loading: Indicates whether the component is in a loading state (e.g., while fetching data or performing an operation).
+ * 
+ * Methods:
+ * - handleCreateVenue: Handles the venue creation process, including validation, API calls, and state updates.
+ * 
+ * External Dependencies:
+ * None
+ */
+
 import React, { useState } from "react";
 import { TextInput, Pressable, Text, ActivityIndicator, View, StyleSheet } from "react-native";
 import { REACT_APP_ORGANIZATION_ID, REACT_APP_API_TOKEN } from '@env';

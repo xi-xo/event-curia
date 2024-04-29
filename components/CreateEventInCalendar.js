@@ -1,3 +1,17 @@
+/**
+ * CreateEventInCalendar Component
+ * 
+ * This component allows the user to create a new event in their Google Calendar.
+ * It provides functionality to sign in with Google, input event details, select start and end dates/times,
+ * and create the event in the calendar.
+ * 
+ * Props:
+ * - route: Object containing route parameters
+ * 
+ * @param {Object} route - Route object containing parameters
+ * @returns {JSX.Element} - JSX element representing the CreateEventInCalendar component
+ */
+
 import React, { useState } from "react";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { View, Text, StyleSheet, Pressable, TextInput, ActivityIndicator } from "react-native";

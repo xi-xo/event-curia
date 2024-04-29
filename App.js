@@ -1,3 +1,24 @@
+/**
+ * App Component
+ * 
+ * This component serves as the main entry point for the application. It sets up
+ * navigation, authentication, and state management, and renders different screens
+ * based on the user's authentication status and role.
+ * 
+ * It uses React Navigation for screen navigation and Supabase for authentication.
+ * The component manages the user's authentication state, including signing in and
+ * signing out, and provides context for authentication-related functions.
+ * 
+ * Props:
+ * None
+ * 
+ * Params:
+ * - route: Object containing route parameters
+ * 
+ * @param {Object} route - Route object containing parameters
+ * @returns {JSX.Element} - JSX element representing the App component.
+ */
+
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -15,8 +36,8 @@ import CreateEventInCalendar from './components/CreateEventInCalendar';
 
 const Stack = createStackNavigator();
 const supabase = createClient(
-  "https://dvuyyfttynkfiehqkeqv.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dXl5ZnR0eW5rZmllaHFrZXF2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTEzOTAyNDQsImV4cCI6MjAyNjk2NjI0NH0.5bBAFK27IL30lGcTdI46LzIv4Do4_kroxFzQhgDOpdQ"
+  "URL",
+  "ANON PUBLIC KEY"
 );
 
 export default function App() {

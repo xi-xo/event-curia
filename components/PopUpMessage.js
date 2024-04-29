@@ -1,3 +1,20 @@
+/**
+ * PopupMessage Component
+ * 
+ * This component represents a popup message modal that displays a message to the user.
+ * It allows the user to close the modal by pressing a "Close" button.
+ * 
+ * Props:
+ * - message: The message to be displayed in the popup modal.
+ * - onClose: Function to be called when the modal is closed.
+ * - visible: Boolean indicating whether the modal is visible or not.
+ * 
+ * @param {string} message - The message to be displayed in the popup modal.
+ * @param {Function} onClose - Function to be called when the modal is closed.
+ * @param {boolean} visible - Boolean indicating whether the modal is visible or not.
+ * @returns {JSX.Element} - JSX element representing the PopupMessage component.
+ */
+
 import React from 'react';
 import { Modal, Text, Pressable, View, StyleSheet } from 'react-native';
 

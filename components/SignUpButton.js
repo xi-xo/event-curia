@@ -1,3 +1,21 @@
+/**
+ * SignUpButton Component
+ * 
+ * This component represents a button used for signing up for an event.
+ * When pressed, it updates the user's events list, stores the updated user data,
+ * and navigates to the event creation screen.
+ * 
+ * Props:
+ * - event: The event object for which the user is signing up.
+ * - navigation: Navigation object used for navigating to other screens.
+ * - onSignUp: Function to be called after the sign-up process is completed.
+ * 
+ * @param {Object} event - The event object for which the user is signing up.
+ * @param {Object} navigation - Navigation object used for navigating to other screens.
+ * @param {Function} onSignUp - Function to be called after the sign-up process is completed.
+ * @returns {JSX.Element} - JSX element representing the SignUpButton component.
+ */
+
 import React from 'react';
 import { Pressable, Text, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';

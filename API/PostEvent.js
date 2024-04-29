@@ -1,3 +1,51 @@
+/**
+ * PostEvent Component
+ * 
+ * Component responsible for creating and posting events. Manages event creation steps, including venue selection,
+ * event details input, ticket class creation, and event publishing.
+ * 
+ * This component provides a multi-step form for creating an event. It guides the user through the process
+ * of selecting a venue, inputting event details such as name, description, capacity, start and end dates,
+ * creating ticket classes, and finally publishing the event.
+ * 
+ * This component serves as the main rendering component for publishing an event.
+ * 
+ * Props:
+ * None
+ * 
+ * Params:
+ * None
+ * 
+ * @returns {JSX.Element} - JSX element representing the PostEvent component
+ * 
+ * State:
+ * - step: Represents the current step in the event creation process.
+ * - eventName: Stores the name of the event being created.
+ * - eventDescription: Stores the description of the event being created.
+ * - capacity: Stores the capacity of attendees for the event being created.
+ * - loading: Indicates whether the component is in a loading state (e.g., while fetching data or performing an operation).
+ * - createdVenueId: Stores the ID of the venue created for the event.
+ * - startDate: Stores the start date and time of the event.
+ * - endDate: Stores the end date and time of the event.
+ * - createdEventId: Stores the ID of the event created.
+ * 
+ * Methods:
+ * - formatDateTime: Helper function to format date and time strings.
+ * - handleCreateEvent: Handles the event creation process, including validation, API calls, and state updates.
+ * - handleTicketClassSuccess: Callback function invoked when a ticket class is successfully created.
+ * 
+ * External Dependencies:
+ * - react: "^17.0.2"
+ * - react-native: "^0.66.4"
+ * - @env: "^1.0.6"
+ * - react-datepicker: "^4.2.1"
+ * 
+ * @requires react
+ * @requires react-native
+ * @requires @env
+ * @requires react-datepicker
+ */
+
 import React, { useState } from "react";
 import { Pressable, TextInput, View, ActivityIndicator, Text, StyleSheet, ScrollView, Alert } from "react-native";
 import { REACT_APP_ORGANIZATION_ID, REACT_APP_API_TOKEN } from '@env';

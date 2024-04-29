@@ -1,3 +1,22 @@
+/**
+ * Authentication Utility Functions
+ * 
+ * This module provides utility functions for user authentication, including signing in,
+ * signing out, and retrieving the current user's information from AsyncStorage.
+ * 
+ * signIn: Authenticates a user by checking the provided email and password against mock user data.
+ *         If successful, stores user's info in AsyncStorage.
+ *         Parameters: email, password
+ *         Returns: user info (id, email, role)
+ *         Throws: If email or password is invalid
+ * 
+ * signOut: Signs out the current user by removing their info from AsyncStorage.
+ * 
+ * getCurrentUser: Retrieves the current user's info from AsyncStorage.
+ *                 Returns: Current user's info or null if none signed in
+ *                 Errors: Logs an error if there's an issue retrieving the info
+ */
+
 import { mockUsers } from "../../utils/mockUsers";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
